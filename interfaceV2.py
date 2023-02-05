@@ -1,11 +1,15 @@
 import PyQt5.QtWidgets as pq5
 from PyQt5 import uic, QtGui
 from PyQt5.QtCore import QPropertyAnimation
+from sin_cos.main import * 
 
 
 class MyGUI(pq5.QMainWindow):
 
     def __init__(self):
+        '''
+        description
+        '''
         super(MyGUI, self).__init__()
         uic.loadUi("GUI/base.ui", self)
 
@@ -16,6 +20,9 @@ class MyGUI(pq5.QMainWindow):
         self.pushButton_4.clicked.connect(self.project_4)
 
     def menu(self):
+        '''
+        description
+        '''
         width = self.leftS.width()
         if width == 0:
             newWidth = 200
@@ -31,16 +38,29 @@ class MyGUI(pq5.QMainWindow):
         self.animation.start()
 
     def project_1(self):
+        '''
+        description
+        '''
         print('project 1')
-
+        sinus() # to check if it works
+        self.close() # close this window
 
     def project_2(self):
+        '''
+        description
+        '''
         print('project 2')
 
     def project_3(self):
+        '''
+        description
+        '''
         print('project 3')
 
     def project_4(self):
+        '''
+        description
+        '''
         print('project 4')
 
 
