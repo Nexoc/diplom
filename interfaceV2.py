@@ -19,7 +19,7 @@ class MyGUI(pq5.QMainWindow):
         width = self.leftS.width()
         if width == 0:
             newWidth = 200
-            self.menuButton.setIcon(QtGui.QIcon(u"ipictures/del.png"))
+            self.menuButton.setIcon(QtGui.QIcon(u"pictures/del.png"))
         else:
             newWidth = 0
             self.menuButton.setIcon(QtGui.QIcon(u"pictures/menu.png"))
