@@ -7,7 +7,7 @@ class MyGUI(pq5.QMainWindow):
 
     def __init__(self):
         super(MyGUI, self).__init__()
-        uic.loadUi("testPY/base.ui", self)
+        uic.loadUi("GUI/base.ui", self)
 
         self.menuButton.clicked.connect(self.menu)
         self.pushButton.clicked.connect(self.project_1)
@@ -19,10 +19,10 @@ class MyGUI(pq5.QMainWindow):
         width = self.leftS.width()
         if width == 0:
             newWidth = 200
-            self.menuButton.setIcon(QtGui.QIcon(u"interface/icons8-delete.png"))
+            self.menuButton.setIcon(QtGui.QIcon(u"ipictures/del.png"))
         else:
             newWidth = 0
-            self.menuButton.setIcon(QtGui.QIcon(u"interface/icons8-menu.png"))
+            self.menuButton.setIcon(QtGui.QIcon(u"pictures/menu.png"))
 
         self.animation = QPropertyAnimation(self.leftS, b"maximumWidth")
         self.animation.setDuration(250)
