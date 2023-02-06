@@ -1,7 +1,8 @@
 import PyQt5.QtWidgets as pq5
 from PyQt5 import uic, QtGui
 from PyQt5.QtCore import QPropertyAnimation
-from sin_cos.main import * 
+import sin_cos.main_1 as marat
+
 
 
 class MyGUI(pq5.QMainWindow):
@@ -11,14 +12,15 @@ class MyGUI(pq5.QMainWindow):
         description
         '''
         super(MyGUI, self).__init__()
-        uic.loadUi("GUI/base.ui", self)
-
+        uic.loadUi("GUI/base.ui", self)   
+        # menu left
         self.menuButton.clicked.connect(self.menu)
+        # projectes
         self.pushButton.clicked.connect(self.project_1)
         self.pushButton_2.clicked.connect(self.project_2)
         self.pushButton_3.clicked.connect(self.project_3)
         self.pushButton_4.clicked.connect(self.project_4)
-
+        self.btn_back.clicked.connect(self.back_button)
     def menu(self):
         '''
         description
@@ -41,9 +43,12 @@ class MyGUI(pq5.QMainWindow):
         '''
         description
         '''
-        print('project 1')
-        sinus() # to check if it works
-        self.close() # close this window
+
+        print('1')
+        marat.main(self) # to check if it works
+        # sys.exit()
+
+  
 
     def project_2(self):
         '''
@@ -62,6 +67,14 @@ class MyGUI(pq5.QMainWindow):
         description
         '''
         print('project 4')
+
+    def back_button(self):
+        '''
+        description
+        '''
+        print('back_ button')
+        self.setWindowTitle("???????????????????????????")
+        self.menuButton.clicked.connect(self.menu)
 
 
 def main():
