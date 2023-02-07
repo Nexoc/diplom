@@ -1,7 +1,7 @@
-import sin_cos.count as counted
-from sin_cos.canvas import Canvas
-# import count as counted
-# from canvas import Canvas
+# import sin_cos.count as counted
+# from sin_cos.canvas import Canvas
+import count as counted
+from canvas import Canvas
 import sys
 import time
 from os import path

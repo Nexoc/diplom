@@ -6,15 +6,17 @@ from matplotlib.backends.qt_compat import QtWidgets
 from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 
+from canvas import Canvas
+# from canvas_1 import MplCanvas
+
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     """
     This "window" is a QWidget.
     It will appear as a free-floating window.
     """
-    def __init__(self):
-        super().__init__()
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.setWindowTitle("Physic - Sinus and Cosinus")
         # main window: size width height and margin top left:
@@ -24,13 +26,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self._main)
         self.layout = QtWidgets.QVBoxLayout(self._main)
 
-        # matplotlib initial
-        # self.canvas = Canvas()
-        # self.canvas.graph()
+        #######################################################################################
+         #                              matplotlib initial                                   # 
+        #######################################################################################
+        self.canvas = Canvas()
+        self.canvas.graph()
 
         # qt5 initial
         self.qt5_init()
 
+ 
         # buttons in sinus project
         self.sinus_button.clicked.connect(self.sinus)
         self.cosinus_button.clicked.connect(self.cosinus)
@@ -221,10 +226,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.verticalLayout.addWidget(self.top_frame)
 
 
-        ###### ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        ###################################################################
+        ##############################################################################################
+         #                        frame for buttons Sin Cos (main frame)                            # 
+        ##############################################################################################
 
-        # frame for buttons Sin Cos (main frame)
         self.frame_main = QtWidgets.QFrame(self.rightS)
         self.frame_main.setMinimumSize(QSize(0, 100))
         self.frame_main.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -258,19 +263,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.horizontalLayout_buttons.addWidget(self.folmeln_samlung_button)
 
 
-        ###############################################
-        # Tabs layout
+        #######################################################################################
+         #                                   Main Layout                                     #
+        #######################################################################################
         # add to main frame
         self.horizontalLayoutWidget_tabs = QtWidgets.QWidget(self.frame_main)
-        self.horizontalLayoutWidget_tabs.setGeometry(QRect(70, 50, 1071, 371))
+        # geometry
+        top, left, width, height = 100, 50, 380, 380
+        self.horizontalLayoutWidget_tabs.setGeometry(QRect(top, left, width, height))
         self.horizontalLayoutWidget_tabs.setObjectName("horizontalLayoutWidget_tabs")
 
-        # add to tabs layout
+        # add to layout
         self.horizontalLayout_main = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_tabs)
         self.horizontalLayout_main.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_main.setObjectName("horizontalLayout_main")
 
-        # add to tabs layout
+        # add to layout
         self.widget_main = QtWidgets.QWidget(self.horizontalLayoutWidget_tabs)
         self.widget_main.setObjectName("widget_main")
         # add to widget_main
@@ -278,26 +286,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.widget_2.setGeometry(QRect(540, 50, 491, 311))
         self.widget_2.setObjectName("widget_2")
 
-        # Tabs
-        # add to widget_main
-        self.tabWidget = QtWidgets.QTabWidget(self.widget_main)
-        self.tabWidget.setGeometry(QRect(26, 10, 1011, 31))
-        self.tabWidget.setObjectName("tabWidget")
-
-        # tab1
-        self.tab_1 = QtWidgets.QWidget()
-        self.tab_1.setObjectName("tab_1")
-        # add tab_1 to tabWidget
-        self.tabWidget.addTab(self.tab_1, "")
-
-        # tab2
-        self.tab_2 = QtWidgets.QWidget()
-        self.tab_2.setObjectName("tab_2")
-        # add tab_2 to tabWidget
-        self.tabWidget.addTab(self.tab_2, "")
-
         # addWidget
         self.horizontalLayout_main.addWidget(self.widget_main)
+
+        #########################################################################################
+         #                                    Canvas(matplotlib)                               #
+        #########################################################################################        
+        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
+
+        
+
         self.verticalLayout.addWidget(self.frame_main)
 
         self.bot_frame = QtWidgets.QFrame(self.rightS)
@@ -317,7 +315,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # function for all textes
         self.retranslateUi()
 
-        self.tabWidget.setCurrentIndex(0)
+        # self.tabWidget.setCurrentIndex(0)
         QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self):
@@ -338,9 +336,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.sinus_button.setText(self._translate("MainWindow", "Sinus"))
         self.cosinus_button.setText(self._translate("MainWindow", "Cosinus"))
         self.folmeln_samlung_button.setText(self._translate("MainWindow", "Formeln Samlung"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_1), self._translate("MainWindow", "Tab 1"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), self._translate("MainWindow", "Tab 2"))
-
+        #self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_1), self._translate("MainWindow", "Tab 1"))
+        #self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), self._translate("MainWindow", "Tab 2"))
 
     def sinus(self):
         '''
@@ -350,8 +347,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 # Window Name
         self.setWindowTitle(self._translate("MainWindow", "Sinus"))
         self.label.setText(self._translate("MainWindow", "Sinus"))
-
-
 
     def cosinus(self):
         '''
@@ -368,7 +363,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         print('folmeln_samlung_button')  
         self.setWindowTitle(self._translate("MainWindow", "Formeln Samlung"))
         self.label.setText(self._translate("MainWindow", "Formeln Samlung"))
-
 
     def menu(self):
         '''
@@ -388,14 +382,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.animation.setEndValue(newWidth)
         self.animation.start()
 
-
     def project_1(self):
         '''
         description
         '''
         print('project 1')
-
-
 
     def project_2(self):
         '''
