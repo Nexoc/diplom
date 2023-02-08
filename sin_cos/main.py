@@ -18,32 +18,26 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.setWindowTitle("Physic - Sinus and Cosinus")
-        # main window: size width height and margin top left:
-        top, left, width, height = 150, 100, 1194, 503
-        self.setGeometry(left, top, width, height)
-        self._main = QtWidgets.QWidget()
-        self.setCentralWidget(self._main)
-        self.layout = QtWidgets.QVBoxLayout(self._main)
-
         #######################################################################################
          #                              matplotlib initial                                   # 
         #######################################################################################
         self.canvas = Canvas()
         self.canvas.graph()
 
-        # qt5 initial
+        #######################################################################################
+         #                                 qt5 initial                                       # 
+        #######################################################################################
         self.qt5_init()
 
  
-        # buttons in sinus project
+        # buttons in physic project
         self.sinus_button.clicked.connect(self.sinus)
         self.cosinus_button.clicked.connect(self.cosinus)
         self.folmeln_samlung_button.clicked.connect(self.folmeln_samlung)
 
-        # menu left
+        # menu button animated
         self.menuButton.clicked.connect(self.menu)
-        # projectes
+        # project buttons
         self.pushButton.clicked.connect(self.project_1)
         self.pushButton_2.clicked.connect(self.project_2)
         self.pushButton_3.clicked.connect(self.project_3)
@@ -51,42 +45,60 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.btn_back.clicked.connect(self.back_button)
 
     def qt5_init(self):
+
         """
         main window UI
         """
-        self.setObjectName("MainWindow")
-        self.centralwidget = QtWidgets.QWidget(self)
 
-        self.centralwidget.setStyleSheet(".QWidget{\n"
+        self.setWindowTitle("Physic - Sinus and Cosinus")
+        # main window: size width height and margin top left:
+        top, left, width, height = 150, 100, 1194, 503
+        self.setGeometry(left, top, width, height)        
+        self.setObjectName("MainWindow")
+
+        #######################################################################################
+         #                         Main Widget (all objects are inside it)                   # 
+        ####################################################################################### 
+        self.centralwidget = QtWidgets.QWidget(self)
+        # StyleSheet
+        self.centralwidget.setStyleSheet(
+        ".QWidget{\n"
         "    border: none;\n"
         "}\n"
+
         ".QFrame{\n"
         "    border: none;\n"
         "}\n"
+
         "#top_frame{\n"
         "    background-color: rgb(181, 222, 255);\n"
         "}\n"
+
         "#bot_frame{\n"
         "    background-color: rgb(181, 222, 255);\n"
-        "}")
-
-        # ?
+        "}")     
         self.centralwidget.setObjectName("centralwidget")
 
-
-        # layout of left menu 
+        #######################################################################################
+         #                       Horizontal Box - QHBoxLayout (menu left)                    # 
+        #######################################################################################      
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         # margin window frame
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0) 
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
+        #######################################################################################
+         #                      frame insite central widget                                  # 
+        #######################################################################################          
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        # ?
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
 
+        #######################################################################################
+         #                       Horizontal Box 2 QHBoxLayout                                # 
+        ####################################################################################### 
         # layout of main frame 
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame)
         # margin other frame
@@ -94,76 +106,102 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
 
-        ################################################################
-        # Frame  left site 
+        #######################################################################################
+         #                      frame leftS  (menu for animation func)                       # 
+        ####################################################################################### 
         self.leftS = QtWidgets.QFrame(self.frame)
         self.leftS.setMaximumSize(QSize(0, 16777215))
         self.leftS.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.leftS.setFrameShadow(QtWidgets.QFrame.Raised)
         self.leftS.setObjectName("leftS")
-        # layout 3
+
+        #######################################################################################
+         #                       Horizontal Box 3 QHBoxLayout                                # 
+        ####################################################################################### 
+
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.leftS)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+
+        #######################################################################################
+         #                      frame                                                        # 
+        ####################################################################################### 
         self.frame_4 = QtWidgets.QFrame(self.leftS)
         self.frame_4.setMinimumSize(QSize(200, 0))
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_4.setObjectName("frame_4")
+
+        #######################################################################################
+         #                       vertical Box 2 QVBoxLayout (menu buttons)                   # 
+        ####################################################################################### 
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.frame_4)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
+
+        # label
         self.label_2 = QtWidgets.QLabel(self.frame_4)
         self.label_2.setMaximumSize(QSize(16777215, 36))
-
         font = QFont()
         font.setPointSize(24)
         self.label_2.setFont(font)
         self.label_2.setAlignment(Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
-        # addWidget
+        # add label to VL3
         self.verticalLayout_3.addWidget(self.label_2)
 
 
-        #####################################################
-        # Buttons in left menu
+        #######################################################################################
+         #                        Buttons for left menu                                      # 
+        ####################################################################################### 
+
         self.pushButton = QtWidgets.QPushButton(self.frame_4)
         self.pushButton.setObjectName("pushButton")
-        # addWidget
+        # add button to VL3
         self.verticalLayout_3.addWidget(self.pushButton)
 
         self.pushButton_2 = QtWidgets.QPushButton(self.frame_4)
         self.pushButton_2.setObjectName("pushButton_2")
-        # addWidget
+        # add button to VL3
         self.verticalLayout_3.addWidget(self.pushButton_2)
 
         self.pushButton_3 = QtWidgets.QPushButton(self.frame_4)
         self.pushButton_3.setObjectName("pushButton_3")
-        # addWidget
+        # add button to VL3
         self.verticalLayout_3.addWidget(self.pushButton_3)
 
         self.pushButton_4 = QtWidgets.QPushButton(self.frame_4)
         self.pushButton_4.setObjectName("pushButton_4")
-        # addWidget
+        # add button to VL3
         self.verticalLayout_3.addWidget(self.pushButton_4)
 
+        # Spacer between buttons and button back
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        # add spacer to VL3
         self.verticalLayout_3.addItem(spacerItem)
+
         self.btn_back = QtWidgets.QPushButton(self.frame_4)
         self.btn_back.setObjectName("btn_back")
-        # addWidget
+        # add button to VL3
         self.verticalLayout_3.addWidget(self.btn_back)
         self.horizontalLayout_3.addWidget(self.frame_4)
         self.horizontalLayout_2.addWidget(self.leftS)
 
 
-        # ?
+        #######################################################################################
+         #                              Frame right                                         # 
+        ####################################################################################### 
+
         self.rightS = QtWidgets.QFrame(self.frame)
         self.rightS.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.rightS.setFrameShadow(QtWidgets.QFrame.Raised)
         self.rightS.setObjectName("rightS")
+
+        #######################################################################################
+         #                       Vertical Box QVBoxLayout                                    # 
+        ####################################################################################### 
         self.verticalLayout = QtWidgets.QVBoxLayout(self.rightS)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setSpacing(0)
@@ -174,12 +212,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.top_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.top_frame.setObjectName("top_frame")
 
-        ################################################################
-        # layout 4 (menu button)
+        #######################################################################################
+         #                       Horizontal Box 4 QHBoxLayout                                # 
+        ####################################################################################### 
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.top_frame)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setSpacing(0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+
+        #######################################################################################
+         #                       Frame 8                                                     # 
+        ####################################################################################### 
         self.frame_8 = QtWidgets.QFrame(self.top_frame)
         self.frame_8.setMinimumSize(QSize(36, 36))
         self.frame_8.setMaximumSize(QSize(36, 36))
@@ -187,47 +230,61 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_8.setObjectName("frame_8")
 
-        # vertical layout
+        #######################################################################################
+         #                      Vertical Box 2 QVBoxLayout                                   # 
+        ####################################################################################### 
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.frame_8)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
 
 
-        ###############'''''''''''''''''''''''''''''''''''''''''''''''''''''
-        # MENU button
+        #######################################################################################
+         #                      MENU button - animated(+png)                                 # 
+        ####################################################################################### 
         self.menuButton = QtWidgets.QPushButton(self.frame_8)
         self.menuButton.setMinimumSize(QSize(36, 36))
         self.menuButton.setMaximumSize(QSize(36, 36))
         self.menuButton.setText("")
-        # icon
+
+        # init and add icon
         icon = QIcon()
         icon.addPixmap(QPixmap("pictures/menu.png"), QIcon.Normal, QIcon.Off)
         self.menuButton.setIcon(icon)
         self.menuButton.setObjectName("menuButton")
-        # addWidget
+        # add menu button to VL2
         self.verticalLayout_2.addWidget(self.menuButton)
 
         # add to Widget frame 8 (menu button)
         self.horizontalLayout_4.addWidget(self.frame_8)
+
+        # spacer
         spacerItem1 = QtWidgets.QSpacerItem(178, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        # add spaser item 1 to horizontalLayout 4
         self.horizontalLayout_4.addItem(spacerItem1)
+
+        # label
         self.label = QtWidgets.QLabel(self.top_frame)
         font = QFont()
         font.setPointSize(24)
         self.label.setFont(font)
         self.label.setAlignment(Qt.AlignCenter)
         self.label.setObjectName("label")
-        # addWidget
+        # add label to horizontalLayout 4
         self.horizontalLayout_4.addWidget(self.label)
+
+        # spacer 2
         spacerItem2 = QtWidgets.QSpacerItem(179, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        # add label 2 to horizontalLayout 4
         self.horizontalLayout_4.addItem(spacerItem2)
-        # addWidget
+        # add top_frame to verticalLayout
         self.verticalLayout.addWidget(self.top_frame)
 
 
         ##############################################################################################
-         #                        frame for buttons Sin Cos (main frame)                            # 
+         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
+          #                                    Content Frame                                       # 
+         # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
         ##############################################################################################
 
         self.frame_main = QtWidgets.QFrame(self.rightS)
@@ -236,68 +293,85 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.frame_main.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_main.setObjectName("frame_main")
 
-        # layout for buttons Sin Cos
-        # add to main frame
+        #######################################################################################
+         #                      Widget for right site (content)                              # 
+        ####################################################################################### 
+
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.frame_main)
         self.horizontalLayoutWidget.setGeometry(QRect(70, -1, 1071, 41))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
+
+        #######################################################################################
+         #                       Horizontal Layout for Buttons QHBoxLayout                   # 
+        ####################################################################################### 
         self.horizontalLayout_buttons = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout_buttons.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_buttons.setObjectName("horizontalLayout_buttons")
 
-        #####''''''''''''''''
-        # buttons
-        # sin
+        #######################################################################################
+         #                       Buttons init and add                                        # 
+        ####################################################################################### 
+        # sin button 
         self.sinus_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.sinus_button.setObjectName("sinus_button")        
         self.horizontalLayout_buttons.addWidget(self.sinus_button)
 
-        # cos
+        # cos button
         self.cosinus_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.cosinus_button.setObjectName("cosinus_button")
         self.horizontalLayout_buttons.addWidget(self.cosinus_button)
 
-        # folmeln_samlung_button
+        # folmeln_samlung button
         self.folmeln_samlung_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.folmeln_samlung_button.setObjectName("folmeln_samlung_button")
         self.horizontalLayout_buttons.addWidget(self.folmeln_samlung_button)
 
 
         #######################################################################################
-         #                                   Main Layout                                     #
+         #                                  Widget for Content                              #
         #######################################################################################
-        # add to main frame
-        self.horizontalLayoutWidget_tabs = QtWidgets.QWidget(self.frame_main)
+        self.horizontalWidget_content = QtWidgets.QWidget(self.frame_main)
         # geometry
         top, left, width, height = 100, 50, 380, 380
-        self.horizontalLayoutWidget_tabs.setGeometry(QRect(top, left, width, height))
-        self.horizontalLayoutWidget_tabs.setObjectName("horizontalLayoutWidget_tabs")
+        self.horizontalWidget_content.setGeometry(QRect(top, left, width, height))
+        self.horizontalWidget_content.setObjectName("horizontalWidget_content")
 
-        # add to layout
-        self.horizontalLayout_main = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_tabs)
+        #######################################################################################
+         #                       Horizontal Box layout for main content                      # 
+        ####################################################################################### 
+        self.horizontalLayout_main = QtWidgets.QHBoxLayout(self.horizontalWidget_content)
         self.horizontalLayout_main.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_main.setObjectName("horizontalLayout_main")
 
-        # add to layout
-        self.widget_main = QtWidgets.QWidget(self.horizontalLayoutWidget_tabs)
+        #######################################################################################
+         #                                  Widget 2 for Content                             #
+        #######################################################################################
+        self.widget_main = QtWidgets.QWidget(self.horizontalWidget_content)
         self.widget_main.setObjectName("widget_main")
-        # add to widget_main
+
+        #######################################################################################
+         #                                  Widget 3 for Content                             #
+        #######################################################################################
         self.widget_2 = QtWidgets.QWidget(self.widget_main)
         self.widget_2.setGeometry(QRect(540, 50, 491, 311))
         self.widget_2.setObjectName("widget_2")
 
-        # addWidget
+        # addWidget to HL main content
         self.horizontalLayout_main.addWidget(self.widget_main)
 
         #########################################################################################
-         #                                    Canvas(matplotlib)                               #
+         #                                Canvas(matplotlib)                                   #
         #########################################################################################        
         self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
+        # just for greed layout
+        # addWidget(label,0,0,1,0,QtCore.Qt.AlignCenter) AlignRight Qt.AlignLeft
 
-        
 
         self.verticalLayout.addWidget(self.frame_main)
 
+        #######################################################################################
+         #                                  frame for right site                            #
+        #######################################################################################
         self.bot_frame = QtWidgets.QFrame(self.rightS)
         self.bot_frame.setMinimumSize(QSize(0, 36))
         self.bot_frame.setMaximumSize(QSize(16777215, 36))
@@ -305,9 +379,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.bot_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.bot_frame.setObjectName("bot_frame")
 
-        # addWidget
+        # add bot frame to verticalLayout
         self.verticalLayout.addWidget(self.bot_frame)
+        # add rightS frame to horizontalLayout_2
         self.horizontalLayout_2.addWidget(self.rightS)
+        # add frame to horizontalLayout
         self.horizontalLayout.addWidget(self.frame)
 
         self.setCentralWidget(self.centralwidget)
