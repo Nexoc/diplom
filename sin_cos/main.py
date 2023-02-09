@@ -16,14 +16,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     It will appear as a free-floating window.
     """
     def __init__(self, *args, **kwargs):
+        self.frame_content = 0 # where we are now
         super().__init__(*args, **kwargs)
 
         #######################################################################################
          #                              matplotlib initial                                   # 
         #######################################################################################
         self.canvas = Canvas()
-        self.canvas.graph()
-        self.canvas.three()
+        # self.canvas.graph()
+        # self.canvas.three()
 
         #######################################################################################
          #                                 qt5 initial                                       # 
@@ -421,8 +422,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         #########################################################################################
          #                                Canvas(matplotlib)                                   #
-        #########################################################################################        
-        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
+        #########################################################################################  
+        # init new canvas
+        if self.frame_content != 1:
+            self.canvas.graph()
+            self.remove_canvas(1)  
+            # add new 
+            self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
+            self.frame_content = 1
 
 
     def cosinus(self):
@@ -432,7 +439,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         print('cosinus button')
         self.setWindowTitle(self._translate("MainWindow", "Cosinus"))
         self.label.setText(self._translate("MainWindow", "Cosinus"))
-        self.horizontalLayout_main.addWidget(self.canvas.three_canvas)
+        # init new canvas
+        if self.frame_content != 2:
+            self.canvas.three()
+            # delete old canvas
+            self.remove_canvas(2)  
+
+            # add new
+            self.horizontalLayout_main.addWidget(self.canvas.three_canvas)
+            self.frame_content = 2
 
     def folmeln_samlung(self):
         '''
@@ -441,6 +456,25 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         print('folmeln_samlung_button')  
         self.setWindowTitle(self._translate("MainWindow", "Formeln Samlung"))
         self.label.setText(self._translate("MainWindow", "Formeln Samlung"))
+        if self.frame_content != 3:
+            self.remove_canvas(3)  
+            self.frame_content = 3
+
+    def remove_canvas(self, check):
+        if self.frame_content == 2:
+            # remove
+            self.horizontalLayout_main.removeWidget(self.canvas.three_canvas)
+            self.canvas.three_canvas.deleteLater()
+            self.canvas.three_canvas = None
+        elif self.frame_content == 1:
+            # remove
+            self.horizontalLayout_main.removeWidget(self.canvas.dynamic_canvas)
+            self.canvas.dynamic_canvas.deleteLater()
+            self.canvas.dynamic_canvas = None
+        elif self.frame_content == 3:
+            pass
+       
+
 
     def menu(self):
         '''
