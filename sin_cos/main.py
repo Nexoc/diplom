@@ -394,7 +394,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.horizontalLayout_2.addWidget(self.rightS)
 
 
-        # try ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        # trying ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         self.canvas.graph()
         # self.horizontalLayout.addWidget(self.canvas.dynamic_canvas) # left before menu
         # self.horizontalLayout_4.addWidget(self.canvas.dynamic_canvas) # title main
@@ -428,19 +428,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def on_context_menu(self, pos):
         context = QtWidgets.QMenu(self)
-        context.addAction(QtWidgets.QAction("sinus", self))
-        context.addAction(QtWidgets.QAction("cosinus", self))
-        context.addAction(QtWidgets.QAction("formeln", self))
+
+        # sinus button
+        sin = QtWidgets.QAction("sinus", self)
+        sin.triggered.connect(self.sinus)
+        context.addAction(sin)
+        #cosinus button
+        cos = QtWidgets.QAction("cosinus", self)
+        cos.triggered.connect(self.cosinus)
+        # cos.triggered.connect(lambda: label.setText("cosinus button triggered"))
+        context.addAction(cos)
+        # folmeln button
+        formeln = QtWidgets.QAction("formeln", self)
+        formeln.triggered.connect(self.folmeln_samlung)
+        context.addAction(formeln)
+
         context.exec(self.mapToGlobal(pos))
-
-    def contextMenuEvent(self, e):
-        context = QtWidgets.QMenu(self)
-        context.addAction(QtWidgets.QAction("sinus", self.sinus))
-        context.addAction(QtWidgets.QAction("cosinus", self))
-        context.addAction(QtWidgets.QAction("formeln", self))
-        print(e)
-        context.exec(e.globalPos())
-
 
     def mousePressEvent(self, e):
 
@@ -539,12 +542,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.label.setText(self._translate("MainWindow", "Cosinus"))
         # init new canvas
         if self.frame_content != 2:
-            self.canvas.three()
+            self.canvas.thriangle()
             # delete old canvas
             self.remove_canvas(2)  
 
             # add new
-            self.horizontalLayout_main.addWidget(self.canvas.three_canvas)
+            self.horizontalLayout_main.addWidget(self.canvas.thriangle_canvas)
             self.frame_content = 2
 
     def folmeln_samlung(self):
@@ -561,9 +564,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def remove_canvas(self, check):
         if self.frame_content == 2:
             # remove
-            self.horizontalLayout_main.removeWidget(self.canvas.three_canvas)
-            self.canvas.three_canvas.deleteLater()
-            self.canvas.three_canvas = None
+            self.horizontalLayout_main.removeWidget(self.canvas.thriangle_canvas)
+            self.canvas.thriangle_canvas.deleteLater()
+            self.canvas.thriangle_canvas = None
         elif self.frame_content == 1:
             # remove
             self.horizontalLayout_main.removeWidget(self.canvas.dynamic_canvas)

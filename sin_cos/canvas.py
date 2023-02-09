@@ -40,36 +40,37 @@ class Canvas(FigureCanvas):
         self._scatter = self.ax.scatter(x=0, y=0, s=5, marker='.', color='black', alpha=0.1)
 
 
-    def three(self):
+    def thriangle(self):
         """
         """
         # dpi = size
-        self.three_canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=90))
-        self.ax = self.three_canvas.figure.subplots()
-        self.ax.set_ylim([0, 1])
-        self.ax.set_xlim([0, 1])
-        self.ax.set_title("Graph")
+        self.thriangle_canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=90))
+        self.ax = self.thriangle_canvas.figure.subplots()
+        self.ax.set_ylim([0, 2])
+        self.ax.set_xlim([0, 2])
+        self.ax.set_title("Threeangle")
         self.ax.set_xlabel('X Axe')
         self.ax.set_ylabel('Y Axe')
         # margin
-        self.three_canvas.move(10, 15)
+        self.thriangle_canvas.move(10, 15)
 
         # triangle points
-        x_points, y_points = [0, 1, 1, 0], [0, 1, 0, 0]
-
-        self.ax.plot(x_points, y_points, 'o-r', alpha=0.7, label="first", lw=5, mec='b', mew=2, ms=10)
-        self.ax.fill_between(x_points, y_points, color='g', alpha=.7)
+        x_hypotenuse, y_hypotenuse = [0, 1.5], [0, 1.5]
+        x_gegenkathete, y_gegenkathete = [1.5, 1.5], [1.5, 0]
+        x_ankathete, y_ankathete = [0, 1.5], [0, 0]
+        # triaangle plot
+        self.ax.plot(x_hypotenuse, y_hypotenuse, 'o-r', alpha=0.7, label = 'Hypotenuse')
+        self.ax.plot(x_gegenkathete, y_gegenkathete, 'o-g', alpha=0.7, label = 'Gegenkathete')
+        self.ax.plot(x_ankathete, y_ankathete, 'o-b', alpha=0.7, label = 'Ankathete', lw=5, mec='b', mew=2, ms=10)
 
         #self.ax.plot(x, f1, ':b')    # пунктирная синяя линия
         #self.ax.plot(x, f2, '--r')   # штрихованная красная линия
         #self.ax.plot(x, f1+f2, 'k')  # черная непрерывная линия
 
         # coordinates of quadrant (polygon)
-        x, y = [0, 0, 1, 1], [0, 1, 1, 0]
+        x, y = [0, 0, 2, 2], [0, 2, 2, 0]
         # alpha = transparency, c = color
         self.ax.fill(x, y, alpha=0.6, c='gray')
-
-
 
     def histogram(self, points_x, points_y):
         """
