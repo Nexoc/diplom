@@ -277,14 +277,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
 ############################################
 
-        self.label_down = QtWidgets.QLabel(self.top_frame)
+        self.label_right = QtWidgets.QLabel(self.top_frame)
         font = QFont()
         font.setPointSize(24)
-        self.label_down.setFont(font)
-        self.label_down.setAlignment(Qt.AlignCenter)
-        self.label_down.setObjectName("label")
+        self.label_right.setFont(font)
+        self.label_right.setAlignment(Qt.AlignCenter)
+        self.label_right.setObjectName("label")
         # add label to horizontalLayout 4
-        self.horizontalLayout_4.addWidget(self.label_down)
+        self.horizontalLayout_4.addWidget(self.label_right)
 ########################################################################
 
         # spacer 2
@@ -414,17 +414,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # function for all textes
         self.retranslateUi()
 
-
-
-
-        ########################################################################################################
-
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.on_context_menu)
-
-    def mousePressEvent(self, event):
-        print("Mouse pressed!")
-        super().contextMenuEvent(event)
 
     def on_context_menu(self, pos):
         context = QtWidgets.QMenu(self)
@@ -433,9 +424,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         sin = QtWidgets.QAction("sinus", self)
         sin.triggered.connect(self.sinus)
         context.addAction(sin)
-        #cosinus button
+        # cosinus button
         cos = QtWidgets.QAction("cosinus", self)
         cos.triggered.connect(self.cosinus)
+        # maybe for the future
         # cos.triggered.connect(lambda: label.setText("cosinus button triggered"))
         context.addAction(cos)
         # folmeln button
@@ -449,47 +441,50 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         if e.button() == Qt.LeftButton:
             # handle the left-button press in here
-            self.label_down.setText(" -> mouse Press Event LEFT")
-            print(" -> mouse Press Event LEFT")
+            self.label_right.setText(" -> mouse Press Event LEFT")
+            x_position = e.x()
+            y_position = e.y()
+            position = e.pos()
+            print(f" -> mouse Press Event LEFT and {x_position=}, {y_position=} --- {position=}")
+
 
         elif e.button() == Qt.MiddleButton:
             # handle the middle-button press in here.
-            self.label_down.setText(" -> mousePressEvent MIDDLE")
+            self.label_right.setText(" -> mousePressEvent MIDDLE")
             print(" -> mousePressEvent MIDDLE")
 
         elif e.button() == Qt.RightButton:
             # handle the right-button press in here.
-            self.label_down.setText(" -> mousePressEvent RIGHT")
+            self.label_right.setText(" -> mousePressEvent RIGHT")
             print(" -> mousePressEvent RIGHT")
 
     def mouseReleaseEvent(self, e):
+        
         if e.button() == Qt.LeftButton:
-            self.label_down.setText(" -> mouseReleaseEvent LEFT")
-            print(" -> mouseReleaseEvent LEFT")
+            self.label_right.setText(" -> mouseReleaseEvent LEFT")
 
         elif e.button() == Qt.MiddleButton:
-            self.label_down.setText(" -> mouseReleaseEvent MIDDLE")
-            print(" -> mouseReleaseEvent MIDDLE")
+            self.label_right.setText(" -> mouseReleaseEvent MIDDLE")
 
         elif e.button() == Qt.RightButton:
-            self.label_down.setText(" -> mouseReleaseEvent RIGHT")
-            print(" -> mouseReleaseEvent RIGHT")
+            self.label_right.setText(" -> mouseReleaseEvent RIGHT")
+
+        x_position = e.x()
+        y_position = e.y()
+        print(f"{x_position=}, {y_position=} ")
 
     def mouseDoubleClickEvent(self, e):
         if e.button() == Qt.LeftButton:
-            self.label_down.setText(" -> mouseDoubleClickEvent LEFT")
+            self.label_right.setText(" -> mouseDoubleClickEvent LEFT")
             print(" -> mouseDoubleClickEvent LEFT")
 
         elif e.button() == Qt.MiddleButton:
-            self.label_down.setText(" -> mouseDoubleClickEvent MIDDLE")
+            self.label_right.setText(" -> mouseDoubleClickEvent MIDDLE")
             print(" -> mouseDoubleClickEvent MIDDLE")
 
         elif e.button() == Qt.RightButton:
-            self.label_down.setText(" -> mouseDoubleClickEvent RIGHT")
+            self.label_right.setText(" -> mouseDoubleClickEvent RIGHT")
             print(" -> mouseDoubleClickEvent RIGHT")
-
-
-        ############################################''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     def retranslateUi(self):
         """
