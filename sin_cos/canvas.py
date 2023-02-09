@@ -53,20 +53,22 @@ class Canvas(FigureCanvas):
         self.ax.set_ylabel('Y Axe')
         # margin
         self.three_canvas.move(10, 15)
-        # x = 0, y = 0, radius = 1 color = red, alpha = transparency
 
-        x = np.linspace(0, 1, 10)
-        f1 = 0.25 - (x - 0.5)**2
-        f2 = x**3
-        self.ax.plot(x, f1, ':b')    # пунктирная синяя линия
-        self.ax.plot(x, f2, '--r')   # штрихованная красная линия
-        self.ax.plot(x, f1+f2, 'k')  # черная непрерывная линия
+        # triangle points
+        x_points, y_points = [0, 1, 1, 0], [0, 1, 0, 0]
 
+        self.ax.plot(x_points, y_points, 'o-r', alpha=0.7, label="first", lw=5, mec='b', mew=2, ms=10)
+        self.ax.fill_between(x_points, y_points, color='g', alpha=.7)
+
+        #self.ax.plot(x, f1, ':b')    # пунктирная синяя линия
+        #self.ax.plot(x, f2, '--r')   # штрихованная красная линия
+        #self.ax.plot(x, f1+f2, 'k')  # черная непрерывная линия
 
         # coordinates of quadrant (polygon)
         x, y = [0, 0, 1, 1], [0, 1, 1, 0]
         # alpha = transparency, c = color
         self.ax.fill(x, y, alpha=0.6, c='gray')
+
 
 
     def histogram(self, points_x, points_y):
