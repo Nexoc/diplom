@@ -20,14 +20,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         super().__init__(*args, **kwargs)
 
         #######################################################################################
-         #                              matplotlib initial                                   # 
+         #                              matplotlib initialization                            # 
         #######################################################################################
         self.canvas = Canvas()
         # self.canvas.graph()
         # self.canvas.three()
 
         #######################################################################################
-         #                                 qt5 initial                                       # 
+         #                                 qt5 initialization                                # 
         #######################################################################################
         self.qt5_init()
 
@@ -37,9 +37,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.cosinus_button.clicked.connect(self.cosinus)
         self.folmeln_samlung_button.clicked.connect(self.folmeln_samlung)
 
-        # menu button animated
+        # An animated button of the menu
         self.menuButton.clicked.connect(self.menu)
-        # project buttons
+        # The buttons of the projects
         self.pushButton.clicked.connect(self.project_1)
         self.pushButton_2.clicked.connect(self.project_2)
         self.pushButton_3.clicked.connect(self.project_3)
@@ -51,7 +51,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         """
         main window UI
         """
-
         self.setWindowTitle("Physic - Sinus and Cosinus")
         # main window: size width height and margin top left:
         top, left, width, height = 150, 100, 1194, 503
@@ -82,7 +81,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.centralwidget.setObjectName("centralwidget")
 
         #######################################################################################
-         #                       Horizontal Box - QHBoxLayout (menu left)                    # 
+         #                       Horizontal Layout- QHBoxLayout (the left menu)              # 
         #######################################################################################      
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         # margin window frame
@@ -91,7 +90,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.horizontalLayout.setObjectName("horizontalLayout")
 
         #######################################################################################
-         #                      frame insite central widget                                  # 
+         #                     The frame is inside the central widget                        # 
         #######################################################################################          
         self.frame = QtWidgets.QFrame(self.centralwidget)
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -101,15 +100,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #######################################################################################
          #                       Horizontal Box 2 QHBoxLayout                                # 
         ####################################################################################### 
-        # layout of main frame 
+        # HorizontalLayout_2 is added into the self.frame
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame)
-        # margin other frame
+        # margin
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
 
         #######################################################################################
-         #                      frame leftS  (menu for animation func)                       # 
+         #       The initialization of the leftS frame                                       # 
         ####################################################################################### 
         self.leftS = QtWidgets.QFrame(self.frame)
         self.leftS.setMaximumSize(QSize(0, 16777215))
@@ -118,7 +117,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.leftS.setObjectName("leftS")
 
         #######################################################################################
-         #                       Horizontal Box 3 QHBoxLayout                                # 
+         #                    The initialization of the horizontal_Layout_3 (QHBoxLayout)    # 
         ####################################################################################### 
 
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.leftS)
@@ -127,7 +126,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
 
         #######################################################################################
-         #                      frame                                                        # 
+         #                The initialization of the horizontal_Layout_3 (QHBoxLayout)        # 
         ####################################################################################### 
         self.frame_4 = QtWidgets.QFrame(self.leftS)
         self.frame_4.setMinimumSize(QSize(200, 0))
@@ -136,7 +135,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.frame_4.setObjectName("frame_4")
 
         #######################################################################################
-         #                       vertical Box 2 QVBoxLayout (menu buttons)                   # 
+         #The initialization of the verticalLayout_3 (QVBoxLayout) for the buttons of the menu # 
         ####################################################################################### 
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.frame_4)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -151,12 +150,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.label_2.setFont(font)
         self.label_2.setAlignment(Qt.AlignCenter)
         self.label_2.setObjectName("label_2")
-        # add label to VL3
+        # The label is added into the verticalLayout_3
         self.verticalLayout_3.addWidget(self.label_2)
 
 
         #######################################################################################
-         #                        Buttons for left menu                                      # 
+         #              The initialization the left buttons of the menu                      # 
         ####################################################################################### 
 
         self.pushButton = QtWidgets.QPushButton(self.frame_4)
@@ -193,7 +192,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
 
         #######################################################################################
-         #                              Frame right                                         # 
+         #           The initialization of the rightS frame                                   # 
         ####################################################################################### 
 
         self.rightS = QtWidgets.QFrame(self.frame)
@@ -242,7 +241,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
 
         #######################################################################################
-         #                      MENU button - animated(+png)                                 # 
+         #                   The initialization of one animated button for the menu          # 
         ####################################################################################### 
         self.menuButton = QtWidgets.QPushButton(self.frame_8)
         self.menuButton.setMinimumSize(QSize(36, 36))
@@ -257,10 +256,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # add menu button to VL2
         self.verticalLayout_2.addWidget(self.menuButton)
 
-        # add to Widget frame 8 (menu button)
+        # add the horizontalLayout_4 into frame 8 (menu button)
         self.horizontalLayout_4.addWidget(self.frame_8)
 
-        # spacer
+        #  The initialization of then spacer
         spacerItem1 = QtWidgets.QSpacerItem(178, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         # add spaser item 1 to horizontalLayout 4
         self.horizontalLayout_4.addItem(spacerItem1)
@@ -411,26 +410,27 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.setCentralWidget(self.centralwidget)
 
-        # function for all textes
+        # The function for all labels, strings of text etc
         self.retranslateUi()
 
+        # The initialization of the context menu
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.on_context_menu)
 
     def on_context_menu(self, pos):
         context = QtWidgets.QMenu(self)
 
-        # sinus button
+        # The initialization of the sinus button
         sin = QtWidgets.QAction("sinus", self)
         sin.triggered.connect(self.sinus)
         context.addAction(sin)
-        # cosinus button
+        # The initialization of the cosinus button
         cos = QtWidgets.QAction("cosinus", self)
         cos.triggered.connect(self.cosinus)
         # maybe for the future
         # cos.triggered.connect(lambda: label.setText("cosinus button triggered"))
         context.addAction(cos)
-        # folmeln button
+        # The initialization of the folmeln button
         formeln = QtWidgets.QAction("formeln", self)
         formeln.triggered.connect(self.folmeln_samlung)
         context.addAction(formeln)
@@ -510,39 +510,42 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         description
         '''
         print('sinus button') 
-                # Window Name
+        # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "Sinus"))
         self.label.setText(self._translate("MainWindow", "Sinus"))
 
         #########################################################################################
          #                                Canvas(matplotlib)                                   #
         #########################################################################################  
-        # check if it is already run
+
+        # Check whether there is already a running sinus canvas
         if self.frame_content != 1:
             # init new
             self.canvas.graph()
-            # remove ald
+            # remove old
             self.remove_canvas(1)  
             # add new 
             self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
-            # save where we are
+            # change the frame_content into "1"
             self.frame_content = 1
 
     def cosinus(self):
         '''
-        description
+        Set the window title and the main label
+        Run Matplotlib Canvas
         '''
         print('cosinus button')
         self.setWindowTitle(self._translate("MainWindow", "Cosinus"))
         self.label.setText(self._translate("MainWindow", "Cosinus"))
-        # init new canvas
+        # check if we are one the same Canvas
         if self.frame_content != 2:
-            self.canvas.thriangle()
-            # delete old canvas
-            self.remove_canvas(2)  
-
-            # add new
-            self.horizontalLayout_main.addWidget(self.canvas.thriangle_canvas)
+            # The initialization of the new canvas
+            self.canvas.triangle()
+            # delete the old canvas
+            self.remove_canvas(2) 
+            # add the new canvas
+            self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas)
+            # The initialization or changing of variable into "2"
             self.frame_content = 2
 
     def folmeln_samlung(self):
@@ -557,11 +560,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.frame_content = 3
 
     def remove_canvas(self, check):
+        # 
         if self.frame_content == 2:
-            # remove
-            self.horizontalLayout_main.removeWidget(self.canvas.thriangle_canvas)
-            self.canvas.thriangle_canvas.deleteLater()
-            self.canvas.thriangle_canvas = None
+            # remove 
+            self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas)
+            self.canvas.triangle_canvas.deleteLater()
+            self.canvas.triangle_canvas = None
         elif self.frame_content == 1:
             # remove
             self.horizontalLayout_main.removeWidget(self.canvas.dynamic_canvas)

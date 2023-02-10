@@ -32,7 +32,7 @@ class Canvas(FigureCanvas):
         circle1 = plt.Circle((0, 0), 1, color='r', fill=False, alpha=0.7)
         self.ax.add_patch(circle1)
 
-        # coordinates of quadrant (polygon)
+        # The coordinates of quadrant (polygon) -> (square)
         x, y = [-1, -1, 1, 1], [-1, 1, 1, -1]
         # alpha = transparency, c = color
         self.ax.fill(x, y, alpha=0.6, c='gray')
@@ -40,21 +40,21 @@ class Canvas(FigureCanvas):
         self._scatter = self.ax.scatter(x=0, y=0, s=5, marker='.', color='black', alpha=0.1)
 
 
-    def thriangle(self):
+    def triangle(self):
         """
         """
         # dpi = size
-        self.thriangle_canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=90))
-        self.ax = self.thriangle_canvas.figure.subplots()
+        self.triangle_canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=90))
+        self.ax = self.triangle_canvas.figure.subplots()
         self.ax.set_ylim([0, 2])
         self.ax.set_xlim([0, 2])
-        self.ax.set_title("Threeangle")
+        self.ax.set_title("Triangle")
         self.ax.set_xlabel('X Axe')
         self.ax.set_ylabel('Y Axe')
         # margin
-        self.thriangle_canvas.move(10, 15)
+        self.triangle_canvas.move(10, 15)
 
-        # triangle points
+        # The initialization of triangle points
         x_hypotenuse, y_hypotenuse = [0, 1.5], [0, 1.5]
         x_gegenkathete, y_gegenkathete = [1.5, 1.5], [1.5, 0]
         x_ankathete, y_ankathete = [0, 1.5], [0, 0]
