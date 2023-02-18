@@ -3,10 +3,12 @@ import sys
 import time
 from os import path
 from matplotlib.backends.qt_compat import QtWidgets
-from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation
+from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPixmap
+import sin_matplotlib as main_animation
+import random
 
-from canvas import Canvas
+from canvas import Canvas, MplCanvas
 # from canvas_1 import MplCanvas
 
 
@@ -558,6 +560,34 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         if self.frame_content != 3:
             self.remove_canvas(3)  
             self.frame_content = 3
+            # The initialization of the new canvas
+            self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)
+            # add to widget
+            self.horizontalLayout_main.addWidget(self.animation_m)
+
+            # some logic
+            n_data = 50
+            self.xdata = list(range(n_data))
+            self.ydata = [random.randint(0, 10) for i in range(n_data)]
+            self.update_plot()
+            self.show()
+
+            # Setup a timer to trigger the redraw by calling update_plot.
+            self.timer = QTimer()
+            self.timer.setInterval(100)
+            self.timer.timeout.connect(self.update_plot)
+            self.timer.start()
+
+    def update_plot(self):
+        # Drop off the first y element, append a new one.
+        self.ydata = self.ydata[1:] + [random.randint(0, 10)]
+        if self.animation_m != None:
+            self.animation_m.axes.cla()  # Clear the canvas.
+            self.animation_m.axes.plot(self.xdata, self.ydata, 'r')
+            # Trigger the canvas to update and redraw.
+            self.animation_m.draw()
+
+
 
     def remove_canvas(self, check):
         # 
@@ -572,7 +602,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.canvas.dynamic_canvas.deleteLater()
             self.canvas.dynamic_canvas = None
         elif self.frame_content == 3:
-            pass     
+            # remove
+            self.horizontalLayout_main.removeWidget(self.animation_m)
+            self.animation_m.deleteLater()
+            self.animation_m = None    
 
     def menu(self):
         '''

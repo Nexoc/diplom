@@ -4,6 +4,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.artist import Artist  
+import matplotlib.animation as animation 
 
 
 class Canvas(FigureCanvas):
@@ -14,6 +16,7 @@ class Canvas(FigureCanvas):
         super().__init__(figure)
         self.dynamic_canvas = None
         self.static_canvas = None
+
 
     def graph(self):
         """
@@ -96,6 +99,53 @@ class Canvas(FigureCanvas):
         self.ax.set_ylabel('quantity of random numbers')
         self.ax.patch.set_facecolor('white')
 
+
+
+    ###########################################################
+    # Animation
+
+    def init_animation(self):
+        self.fig, self.ax = plt.subplots() 
+    
+        self.ax.set_xlim([-1, 1]) 
+        self.ax.set_ylim([-1, 1]) 
+            
+        self.L = 50
+        theta = np.linspace(0, 2 * np.pi, self.L) 
+        r = np.ones_like(theta) 
+            
+        self.x = r * np.cos(theta) 
+        self.y = r * np.sin(theta) 
+            
+        self.line, = self.ax.plot(1, 0, 'ro') 
+            
+        annotation = self.ax.annotate( 
+            'annotation', xy =(1, 0), xytext =(-1, 0), 
+            arrowprops = {'arrowstyle': "->"}
+            ) 
+        Artist.set_animated(annotation, False) 
+    
+
+    def update(self, i): 
+        
+        new_x = self.x[i % self.L] 
+        new_y = self.y[i % self.L] 
+        self.line.set_data(new_x, new_y) 
+        
+        self.annotation.set_position((-new_x, -new_y)) 
+        self.annotation.xy = (new_x, new_y) 
+
+    def run_animation(self):
+        # interval 500
+        ani = animation.FuncAnimation( 
+        self.fig, self.update, interval = 500, blit = False 
+        )        
+        self.fig.suptitle('matplotlib.artist.Artist.set_animated()\
+        function Example', fontweight ="bold")         
+        plt.show()
+
+    #############################################################
+
     def save(self, type=""):
         """
         :param type: "histogram", "graph"
@@ -110,3 +160,11 @@ class Canvas(FigureCanvas):
             print(f'{type}_{name}.png has been saved successfully')
         else:
             print(f"{type}_{name}.png hasn't been saved")
+
+
+
+class MplCanvas(FigureCanvas):
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        super(MplCanvas, self).__init__(fig)
