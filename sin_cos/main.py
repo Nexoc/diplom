@@ -566,9 +566,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.horizontalLayout_main.addWidget(self.animation_m)
 
             # some logic
+            """
             n_data = 50
             self.xdata = list(range(n_data))
             self.ydata = [random.randint(0, 10) for i in range(n_data)]
+            """
+            self.xdata = [2, 3, 4, 7]
+            self.ydata = [3, 4, 6, 9]          
+
+
             self.update_plot()
             self.show()
 
@@ -586,8 +592,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.animation_m.axes.plot(self.xdata, self.ydata, 'r')
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()
-
-
 
     def remove_canvas(self, check):
         # 
