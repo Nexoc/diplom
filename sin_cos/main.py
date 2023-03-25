@@ -8,7 +8,7 @@ from matplotlib.backends.qt_compat import QtWidgets
 
 from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QTextBrowser
+from PyQt5.QtWidgets import QTextBrowser, QLineEdit
 
 import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
@@ -357,7 +357,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.horizontalLayout_main.setObjectName("horizontalLayout_main")
 
         #######################################################################################
-         #                                  Widget main for Content                             #
+         #                                  Widget main for Content                          #
         #######################################################################################
         self.widget_main = QtWidgets.QWidget(self.horizontalWidget_content)
         self.widget_main.setObjectName("widget_main")
@@ -408,17 +408,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.text.append(sin_text)
 
-        # trying ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
         self.canvas.graph()
-        # self.horizontalLayout.addWidget(self.canvas.dynamic_canvas) # left before menu
-        # self.horizontalLayout_4.addWidget(self.canvas.dynamic_canvas) # title main
-        # self.horizontalLayout_buttons.addWidget(self.canvas.dynamic_canvas) # buttons
-        # self.horizontalLayout_2.addWidget(self.canvas.dynamic_canvas) # right
-        # self.horizontalLayout_3.addWidget(self.canvas.dynamic_canvas) # menu buttons
-        # self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas) # ?
-        # self.verticalLayout.addWidget(self.canvas.dynamic_canvas) # menu button (Button)
-        # self.verticalLayout_2.addWidget(self.canvas.dynamic_canvas) # ?
-        # self.verticalLayout_3.addWidget(self.canvas.dynamic_canvas) # ?
 
         # add rightS frame to horizontalLayout_2
         self.horizontalLayout.addWidget(self.frame)
@@ -578,17 +569,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         print('folmeln_samlung_button')  
         self.setWindowTitle(self._translate("MainWindow", "Formeln Samlung"))
         self.label.setText(self._translate("MainWindow", "Formeln Samlung"))
+  
         if self.frame_content != 3:
             self.remove_canvas(3)  
             self.frame_content = 3
             # The initialization of the new canvas
             self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)
+            # add input
+
             # add to widget
             self.horizontalLayout_main.addWidget(self.animation_m)
 
-            forml_text = 'Formln Samlung -  Formln Samlung -  Formln Samlung -  Formln Samlung -  Formln Samlung -  Formln Samlung -  Formln Samlung -  '
-            self.text.clear()
-            self.text.append(forml_text)
+            self.grad = QLineEdit()
+            self.grad.setAlignment(Qt.AlignVCenter)
+            self.horizontalLayout_main.addWidget(self.grad)
+            # self.grad.returnPressed.connect(self.update_plot_2)
+            self.grad.textChanged.connect(self.update_plot_2)
 
             # some logic
             """
@@ -596,9 +592,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.xdata = list(range(n_data))
             self.ydata = [random.randint(0, 10) for i in range(n_data)]
             """
-            self.xdata = [2, 3, 4, 7]
-            self.ydata = [3, 4, 6, 9]          
 
+            self.xdata = [2, 3, 4, 7]
+            self.ydata = [3, 4, 6, 9] 
 
             self.update_plot()
             self.show()
@@ -618,23 +614,35 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()
 
+    def update_plot_2(self):
+        text = self.grad.text()
+        self.text.clear()
+        self.text.append(f"<p style='text-align: right; color:red'>{text}</p>")
+        
+
     def remove_canvas(self, check):
         # 
         if self.frame_content == 2:
-            # remove 
+            # remove triangle_canvas
             self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas)
             self.canvas.triangle_canvas.deleteLater()
             self.canvas.triangle_canvas = None
+
         elif self.frame_content == 1:
-            # remove
+            # remove dynamic_canvas
             self.horizontalLayout_main.removeWidget(self.canvas.dynamic_canvas)
             self.canvas.dynamic_canvas.deleteLater()
             self.canvas.dynamic_canvas = None
+
         elif self.frame_content == 3:
-            # remove
+            # remove animation_m
             self.horizontalLayout_main.removeWidget(self.animation_m)
             self.animation_m.deleteLater()
-            self.animation_m = None    
+            self.animation_m = None 
+            self.horizontalLayout_main.removeWidget(self.grad)
+            self.grad.deleteLater()
+            self.grad = None
+   
 
     def menu(self):
         '''
