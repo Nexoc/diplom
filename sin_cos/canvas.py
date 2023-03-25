@@ -7,6 +7,8 @@ import numpy as np
 from matplotlib.artist import Artist  
 import matplotlib.animation as animation 
 
+from numpy import sin, cos, pi, linspace
+
 
 class Canvas(FigureCanvas):
     """
@@ -49,8 +51,8 @@ class Canvas(FigureCanvas):
         # dpi = size
         self.triangle_canvas = FigureCanvas(Figure(figsize=(5, 5), dpi=90))
         self.ax = self.triangle_canvas.figure.subplots()
-        self.ax.set_ylim([0, 2])
-        self.ax.set_xlim([0, 2])
+        self.ax.set_ylim([-0.2, 2])
+        self.ax.set_xlim([-0.2, 2])
         self.ax.set_title("Triangle")
         self.ax.set_xlabel('X Axe')
         self.ax.set_ylabel('Y Axe')
@@ -61,10 +63,23 @@ class Canvas(FigureCanvas):
         x_hypotenuse, y_hypotenuse = [0, 1.5], [0, 1.5]
         x_gegenkathete, y_gegenkathete = [1.5, 1.5], [1.5, 0]
         x_ankathete, y_ankathete = [0, 1.5], [0, 0]
+
         # triaangle plot
-        self.ax.plot(x_hypotenuse, y_hypotenuse, 'o-r', alpha=0.7, label = 'Hypotenuse')
-        self.ax.plot(x_gegenkathete, y_gegenkathete, 'o-g', alpha=0.7, label = 'Gegenkathete')
+        self.ax.plot(x_hypotenuse, y_hypotenuse, 'o-r', alpha=0.7, label = 'Hypotenuse', lw=5, mec='b', mew=2, ms=10)
+        self.ax.plot(x_gegenkathete, y_gegenkathete, 'o-g', alpha=0.7, label = 'Gegenkathete', lw=5, mec='b', mew=2, ms=10)
         self.ax.plot(x_ankathete, y_ankathete, 'o-b', alpha=0.7, label = 'Ankathete', lw=5, mec='b', mew=2, ms=10)
+
+        # Winkel Arc
+        arc_angles = linspace(0 * pi, pi/4, 20)
+        arc_xs = 0.3 * cos(arc_angles)
+        arc_ys = 0.3 * sin(arc_angles)
+        self.ax.plot(arc_xs, arc_ys, color = 'yellow', lw = 3)
+
+
+        self.ax.annotate('Hypotenuse', xy=(1, 1), xytext=(0.7, 1.3), arrowprops={'facecolor': 'red', 'shrink': 0.01})
+        self.ax.annotate('Gegenkathete', xy=(1.5, 1), xytext=(1.7, 1), arrowprops={'facecolor': 'green', 'shrink': 0.01}, rotation = 270)
+        self.ax.annotate('Ankathete', xy=(1, 0), xytext=(1, 0.3), arrowprops={'facecolor': 'blue', 'shrink': 0.01})
+        self.ax.annotate('α', xy=(0.29, 0.1), xytext=(0.5, 0.3), arrowprops={'facecolor': 'yellow', 'shrink': 0.01})
 
         #self.ax.plot(x, f1, ':b')    # пунктирная синяя линия
         #self.ax.plot(x, f2, '--r')   # штрихованная красная линия
