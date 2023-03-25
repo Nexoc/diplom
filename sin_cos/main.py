@@ -1,17 +1,17 @@
 
 import sys
 import time
-from os import path
-from matplotlib.backends.qt_compat import QtWidgets
-from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
-
-from PyQt5.QtGui import QFont, QIcon, QPixmap
-import sin_matplotlib as main_animation
 import random
+from os import path
+
+from matplotlib.backends.qt_compat import QtWidgets
+
+from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
+from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QTextBrowser
 
+import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
-# from canvas_1 import MplCanvas
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -27,14 +27,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
          #                              matplotlib initialization                            # 
         #######################################################################################
         self.canvas = Canvas()
-        # self.canvas.graph()
-        # self.canvas.three()
 
         #######################################################################################
          #                                 qt5 initialization                                # 
         #######################################################################################
         self.qt5_init()
-
  
         # buttons in physic project
         self.sinus_button.clicked.connect(self.sinus)
@@ -278,7 +275,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # add label to horizontalLayout 4
         self.horizontalLayout_4.addWidget(self.label)
 
-############################################
+        ############################################
         self.label_right = QtWidgets.QLabel(self.top_frame)
         font = QFont()
         font.setPointSize(24)
@@ -348,7 +345,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #######################################################################################
         self.horizontalWidget_content = QtWidgets.QWidget(self.frame_main)
         # geometry of main content
-        top, left, width, height = 50, 50, 800, 380
+        top, left, width, height = 50, 50, 1100, 380
         self.horizontalWidget_content.setGeometry(QRect(top, left, width, height))
         self.horizontalWidget_content.setObjectName("horizontalWidget_content")
 
@@ -360,13 +357,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.horizontalLayout_main.setObjectName("horizontalLayout_main")
 
         #######################################################################################
-         #                                  Widget 2 for Content                             #
+         #                                  Widget main for Content                             #
         #######################################################################################
         self.widget_main = QtWidgets.QWidget(self.horizontalWidget_content)
         self.widget_main.setObjectName("widget_main")
 
         #######################################################################################
-         #                                  Widget 3 for Content                             #
+         #                                  Widget 2 for Content                             #
         #######################################################################################
         self.widget_2 = QtWidgets.QWidget(self.widget_main)
         top1, left1, width1, height1 = 10, 100, 300, 300
@@ -376,13 +373,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # addWidget to HL main content
         self.horizontalLayout_main.addWidget(self.widget_main)
 
-
-
         self.verticalLayout.addWidget(self.frame_main)
 
         #######################################################################################
          #                                  frame for right site                            #
         #######################################################################################
+##########-----------------------------------------------------------------------------------------------------------------        
         self.content_frame = QtWidgets.QFrame(self.rightS)
         self.content_frame.setMinimumSize(QSize(0, 36))
         self.content_frame.setMaximumSize(QSize(16777215, 36))
@@ -400,8 +396,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text = QTextBrowser()
         self.text.setAcceptRichText(True)
         self.text.setOpenExternalLinks(True)
+        # self.horizontalLayout_2.addWidget(self.text, 1)
         self.horizontalLayout_main.addWidget(self.text, 1)
 
+        sin_text = 'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
+                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
+                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
+                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
+                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
+                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '               
+
+        self.text.append(sin_text)
 
         # trying ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         self.canvas.graph()

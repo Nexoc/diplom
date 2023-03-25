@@ -44,6 +44,22 @@ class Canvas(FigureCanvas):
         # s=size, marker=point style, color=color, alpha=transparency
         self._scatter = self.ax.scatter(x=0, y=0, s=5, marker='.', color='black', alpha=0.1)
 
+                # The initialization of triangle points
+        x_hypotenuse, y_hypotenuse = [0, .7], [0, .7]
+        x_gegenkathete, y_gegenkathete = [.7, .7], [.7, 0]
+        x_ankathete, y_ankathete = [0, .7], [0, 0]
+
+        # triaangle plot
+        self.ax.plot(x_hypotenuse, y_hypotenuse, 'o-r', alpha=0.7, label = 'Hypotenuse', lw=5, mec='b', mew=2, ms=10)
+        self.ax.plot(x_gegenkathete, y_gegenkathete, 'o-g', alpha=0.7, label = 'Gegenkathete', lw=5, mec='b', mew=2, ms=10)
+        self.ax.plot(x_ankathete, y_ankathete, 'o-b', alpha=0.7, label = 'Ankathete', lw=5, mec='b', mew=2, ms=10)
+
+        # Winkel Arc
+        arc_angles = linspace(0 * pi, pi/4, 20)
+        arc_xs = 0.3 * cos(arc_angles)
+        arc_ys = 0.3 * sin(arc_angles)
+        self.ax.plot(arc_xs, arc_ys, color = 'yellow', lw = 3)
+
 
     def triangle(self):
         """
