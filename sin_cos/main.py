@@ -4,9 +4,11 @@ import time
 from os import path
 from matplotlib.backends.qt_compat import QtWidgets
 from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
+
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 import sin_matplotlib as main_animation
 import random
+from PyQt5.QtWidgets import QTextBrowser
 
 from canvas import Canvas, MplCanvas
 # from canvas_1 import MplCanvas
@@ -277,7 +279,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.horizontalLayout_4.addWidget(self.label)
 
 ############################################
-
         self.label_right = QtWidgets.QLabel(self.top_frame)
         font = QFont()
         font.setPointSize(24)
@@ -286,7 +287,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.label_right.setObjectName("label")
         # add label to horizontalLayout 4
         self.horizontalLayout_4.addWidget(self.label_right)
-########################################################################
+
 
         # spacer 2
         spacerItem2 = QtWidgets.QSpacerItem(179, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -393,6 +394,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.verticalLayout.addWidget(self.content_frame)
         # add rightS frame to horizontalLayout_2
         self.horizontalLayout_2.addWidget(self.rightS)
+
+        ##########################################################################
+        # text_content
+        self.text = QTextBrowser()
+        self.text.setAcceptRichText(True)
+        self.text.setOpenExternalLinks(True)
+        self.horizontalLayout_main.addWidget(self.text, 1)
 
 
         # trying ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -528,6 +536,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.remove_canvas(1)  
             # add new 
             self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
+            sin_text = 'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '
+            self.text.clear()
+            self.text.append(sin_text)
             # change the frame_content into "1"
             self.frame_content = 1
 
@@ -547,8 +558,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.remove_canvas(2) 
             # add the new canvas
             self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas)
-            # The initialization or changing of variable into "2"
-            self.frame_content = 2
+            
+            cos_text = 'dfghydn dfgnjxfgmnsfgmnjs fmndszhm fghmndsmdtszmksfgn srfgmjnsd mdstzmj'
+            self.text.clear()
+            self.text.append(cos_text)
+
+        # The initialization or changing of variable into "2"
+        self.frame_content = 2
 
     def folmeln_samlung(self):
         '''
@@ -564,6 +580,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)
             # add to widget
             self.horizontalLayout_main.addWidget(self.animation_m)
+
+            forml_text = 'Formln Samlung -  Formln Samlung -  Formln Samlung -  Formln Samlung -  Formln Samlung -  Formln Samlung -  Formln Samlung -  '
+            self.text.clear()
+            self.text.append(forml_text)
 
             # some logic
             """
