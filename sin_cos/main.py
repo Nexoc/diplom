@@ -7,12 +7,13 @@ from os import path
 from matplotlib.backends.qt_compat import QtWidgets
 
 from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
-from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QTextBrowser, QLineEdit
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QIntValidator
+from PyQt5.QtWidgets import QTextBrowser, QLineEdit, QLabel
 
 import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
 
+import math 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     """
@@ -22,6 +23,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         self.frame_content = 0 # where we are now
         super().__init__(*args, **kwargs)
+        self.text_content = '<div>sin(a) = Gegenkathete durch Hypotenuse<div/><div>cos(a) = Ankathete durch Hypotenuse<div/>'
+        self.ankathete = None
+        self.gegenkathete = None
 
         #######################################################################################
          #                              matplotlib initialization                            # 
@@ -396,17 +400,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text = QTextBrowser()
         self.text.setAcceptRichText(True)
         self.text.setOpenExternalLinks(True)
-        # self.horizontalLayout_2.addWidget(self.text, 1)
         self.horizontalLayout_main.addWidget(self.text, 1)
 
-        sin_text = 'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
-                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
-                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
-                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
-                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '\
-                    'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '               
-
-        self.text.append(sin_text)
+        self.text_content = 'Erste Ansicht\nzweite reihe'            
+        self.text.append(self.text_content)
 
 
         self.canvas.graph()
@@ -524,19 +521,48 @@ class ApplicationWindow(QtWidgets.QMainWindow):
          #                                Canvas(matplotlib)                                   #
         #########################################################################################  
 
-        # Check whether there is already a running sinus canvas
-        if self.frame_content != 1:
-            # init new
-            self.canvas.graph()
-            # remove old
-            self.remove_canvas(1)  
-            # add new 
-            self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
-            sin_text = 'Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- Sinus- '
-            self.text.clear()
-            self.text.append(sin_text)
-            # change the frame_content into "1"
-            self.frame_content = 1
+                # check if we are one the same Canvas
+
+        # remove old
+        self.remove_canvas(1)  
+        
+        # init new
+        if self.ankathete == None:
+            self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
+        else:
+            self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
+                              x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
+                              x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0])     
+        # add new 
+        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
+
+        self.text.clear()
+        self.text.append(self.text_content)
+
+        # init input
+        self.grad = QLineEdit()
+        self.grad.setAlignment(Qt.AlignVCenter)
+        self.grad.setValidator(QIntValidator(bottom=0, top=360))
+        self.grad.setFont(QFont("Arial",20))
+        self.horizontalLayout_main.addWidget(self.grad)
+
+
+        self.label_grad = QLabel(self)
+        self.label_grad.setText("<b>° Grad</b>")
+        self.label_grad.setFont(QFont("Arial",20))
+        self.label_grad.setAlignment(Qt.AlignCenter)
+        self.label_grad.setBuddy(self.grad)
+        self.horizontalLayout_main.addWidget(self.label_grad)
+        
+        # self._timer = self.canvas.dynamic_canvas.new_timer(1)
+        # self._timer.add_callback(self._update_canvas)
+        # self._timer.start()
+        
+        # self.grad.textChanged.connect(self.update_text)
+        self.grad.returnPressed.connect(self.update_text)
+
+        # change the frame_content into "1"
+        self.frame_content = 1
 
     def cosinus(self):
         '''
@@ -574,17 +600,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.remove_canvas(3)  
             self.frame_content = 3
             # The initialization of the new canvas
-            self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)
-            # add input
-
+            self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
             # add to widget
             self.horizontalLayout_main.addWidget(self.animation_m)
 
-            self.grad = QLineEdit()
-            self.grad.setAlignment(Qt.AlignVCenter)
-            self.horizontalLayout_main.addWidget(self.grad)
-            # self.grad.returnPressed.connect(self.update_plot_2)
-            self.grad.textChanged.connect(self.update_plot_2)
 
             # some logic
             """
@@ -593,8 +612,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.ydata = [random.randint(0, 10) for i in range(n_data)]
             """
 
-            self.xdata = [2, 3, 4, 7]
-            self.ydata = [3, 4, 6, 9] 
+            self.xdata = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
+            self.ydata = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
 
             self.update_plot()
             self.show()
@@ -607,42 +626,93 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def update_plot(self):
         # Drop off the first y element, append a new one.
-        self.ydata = self.ydata[1:] + [random.randint(0, 10)]
+        self.ydata = self.ydata[1:] + [random.random()]
         if self.animation_m != None:
             self.animation_m.axes.cla()  # Clear the canvas.
             self.animation_m.axes.plot(self.xdata, self.ydata, 'r')
+            
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()
 
-    def update_plot_2(self):
-        text = self.grad.text()
+    def update_text(self):
+        self.text_content = self.grad.text()
         self.text.clear()
-        self.text.append(f"<p style='text-align: right; color:red'>{text}</p>")
+
+        #print(type(text)) # str
+        if self.text_content == '':
+            self.degrie = 0
+        else:
+            self.degrie = int(self.text_content) # with validator is always int max from 0 to 999
+            # self.remove_canvas(1)
+        self.counting()
+        self.text_content = f"<div style='text-align: right;'>Sie haben {self.text_content}° gegeben.</div>\
+                         <div style='text-align: right;'>Sinus von {self.degrie}° ist {round(self.ankathete, 2)}</div>\
+                         <div style='text-align: right;'>Cosinus von {self.degrie}° ist {round(self.gegenkathete, 2)}</div>\
+                         <div style='text-align: right; color:red'>Hypotenuse ist Radiud = 1 </div>\
+                        <div style='text-align: right; color:blue'>Ankathete = sin({self.degrie}) * radius</div>\
+                         <div style='text-align: right; color:green'>Gegenkathete = cos({self.degrie}) * radius</div>\
+                         <div style='text-align: right;'>Ankathete ist {round(self.ankathete, 2)}</div>\
+                         <div style='text-align: right;'>Gegenkathete ist {round(self.gegenkathete, 2)}</div>\
+                            "
+        self.text.append(self.text_content)
+        self.sinus()
+
+
+    def counting(self, r=1):
+        self.ankathete = math.sin(math.radians(self.degrie))
+        self.gegenkathete = math.cos(math.radians(self.degrie))
+
+        print(f'{self.degrie=}')
+        print(f"{self.ankathete=}, {self.gegenkathete=}")          
+
+
+    def _update_canvas(self):
+
+        # s = size in pixel
+        # marker = . see https://matplotlib.org/stable/api/markers_api.html#module-matplotlib.markers
+        x_1 = random.random()
+        x_2 = random.random()
+        y_1 = random.random()
+        y_2 = random.random()
+
+        self.canvas.ax.scatter(x=x_1, y=y_1, s=4, marker='h', color="yellow")
+        self.canvas.ax.scatter(x=x_2, y=y_2, s=4, marker='h', color="green")
+
         
+        # to draw the point on the canvas
+        self.canvas._scatter.figure.canvas.draw()
+        # self.canvas.ax.cla()
+
+        if 6 == 7:
+            self._timer.stop()
+
 
     def remove_canvas(self, check):
-        # 
-        if self.frame_content == 2:
-            # remove triangle_canvas
-            self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas)
-            self.canvas.triangle_canvas.deleteLater()
-            self.canvas.triangle_canvas = None
-
-        elif self.frame_content == 1:
-            # remove dynamic_canvas
+        # remove dynamic_canvas and input field
+        if self.frame_content == 1:
             self.horizontalLayout_main.removeWidget(self.canvas.dynamic_canvas)
             self.canvas.dynamic_canvas.deleteLater()
             self.canvas.dynamic_canvas = None
 
-        elif self.frame_content == 3:
-            # remove animation_m
-            self.horizontalLayout_main.removeWidget(self.animation_m)
-            self.animation_m.deleteLater()
-            self.animation_m = None 
             self.horizontalLayout_main.removeWidget(self.grad)
             self.grad.deleteLater()
             self.grad = None
-   
+
+            self.horizontalLayout_main.removeWidget(self.label_grad)
+            self.label_grad.deleteLater()
+            self.label_grad = None
+
+        # remove triangle_canvas
+        elif self.frame_content == 2:            
+            self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas)
+            self.canvas.triangle_canvas.deleteLater()
+            self.canvas.triangle_canvas = None
+
+            # remove animation_m
+        elif self.frame_content == 3:
+            self.horizontalLayout_main.removeWidget(self.animation_m)
+            self.animation_m.deleteLater()
+            self.animation_m = None 
 
     def menu(self):
         '''
