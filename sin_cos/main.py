@@ -3,6 +3,9 @@ import sys
 import time
 import random
 from os import path
+import math 
+
+import numpy as np
 
 from matplotlib.backends.qt_compat import QtWidgets
 
@@ -13,7 +16,7 @@ from PyQt5.QtWidgets import QTextBrowser, QLineEdit, QLabel
 import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
 
-import math 
+
 
 class ApplicationWindow(QtWidgets.QMainWindow):
     """
@@ -401,8 +404,29 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text.setAcceptRichText(True)
         self.text.setOpenExternalLinks(True)
         self.horizontalLayout_main.addWidget(self.text, 1)
-
-        self.text_content = 'Erste Ansicht\nzweite reihe'            
+        self.text_content = """ 
+            <div>
+                <b style='color:blue'>Sinus</b> und <b style='color:blue'>Cosinus</b> sind zwei mathematische Funktionen, 
+                die häufig in der Trigonometrie verwendet werden, einem Zweig der Mathematik, 
+                der sich mit den Beziehungen zwischen den Seiten und Winkeln von Dreiecken befasst.
+                <br><br>
+                Die Sinusfunktion (sin) bezieht sich auf das Verhältnis 
+                der Länge der Seite gegenüber einem Winkel in einem rechtwinkligen Dreieck zur Länge der Hypotenuse (der längsten Seite) des Dreiecks. 
+                <br>
+                Mit anderen Worten, <b style='color:blue'>sin(α) = Gegenkathete(gegenüberliegende Seite) / Hypotenuse.</b>
+                <br><br>
+                Die Kosinusfunktion (cos) bezieht sich auf das Verhältnis 
+                der Länge der anliegenden Seite (der Seite, die an den Winkel angrenzt) zur Hypotenuse des Dreiecks. 
+                <br>Mit anderen Worten, <b style='color:blue'>cos(α) = Ankathete(anliegende Seite) / Hypotenuse.</b>
+                <br><br>
+                Diese Funktionen sind in einer Vielzahl von Bereichen 
+                wie Ingenieurwissenschaften, Physik und Navigation nützlich. 
+                <br>
+                Sie können verwendet werden, um die Länge einer Seite oder das Maß eines Winkels in einem Dreieck zu bestimmen, 
+                sowie um periodische Phänomene wie Wellen und Vibrationen zu modellieren.
+            </div>
+            """
+                
         self.text.append(self.text_content)
 
 
@@ -517,6 +541,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.setWindowTitle(self._translate("MainWindow", "Sinus"))
         self.label.setText(self._translate("MainWindow", "Sinus"))
 
+
         #########################################################################################
          #                                Canvas(matplotlib)                                   #
         #########################################################################################  
@@ -528,11 +553,23 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         
         # init new
         if self.ankathete == None:
+            self.text_content = """
+                    Der Sinus ist eine trigonometrische Funktion, die sich auf das Verhältnis der Länge der Seite gegenüber einem Winkel in einem rechtwinkligen Dreieck zur Länge der Hypotenuse (der längsten Seite) des Dreiecks bezieht. Mit anderen Worten, der Sinus eines Winkels theta ist das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
+
+                    Die Sinusfunktion wird oft als sin abgekürzt und ist eine periodische Funktion mit einer Periode von 2π (radian). Das bedeutet, dass der Sinus einer bestimmten Winkelgröße in einem rechtwinkligen Dreieck gleich ist wie der Sinus des gleichen Winkels, der um 360 Grad (oder 2π) erhöht oder verringert ist.
+
+                    Der Sinus ist in vielen Bereichen der Mathematik und Wissenschaften nützlich. Zum Beispiel kann er verwendet werden, um die Höhe eines Objekts zu berechnen, wenn die Entfernung und der Winkel zur Spitze des Objekts bekannt sind. Er kann auch verwendet werden, um die Auslenkung eines schwingenden Objekts zu modellieren, wie zum Beispiel bei einem Pendel.
+
+                    Es gibt auch eine Reihe von Identitäten und Formeln, die den Sinus betreffen. Eine bekannte Identität ist die Sinus-Addition-Formel, die das Verhältnis von Sinus und Cosinus für die Summe oder Differenz von zwei Winkeln beschreibt. Eine andere wichtige Formel ist die Sinus-Regel, die das Verhältnis von Seiten und Winkeln in einem allgemeinen Dreieck beschreibt.
+
+                    Insgesamt ist der Sinus eine wichtige Funktion in der Mathematik und den Wissenschaften, die in vielen Anwendungen verwendet wird.
+                    """
+            self.text.append(self.text_content)
             self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
         else:
             self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
-                              x_gegenkathete=[self.gegenkathete, abs(self.gegenkathete)], y_gegenkathete=[self.ankathete, 0], 
-                              x_ankathete=[0, abs(self.gegenkathete)], y_ankathete=[0, 0])     
+                              x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
+                              x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0], arc=self.degrie)     
         # add new 
         self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
 
@@ -581,7 +618,19 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # add the new canvas
             self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas)
             
-            cos_text = 'dfghydn dfgnjxfgmnsfgmnjs fmndszhm fghmndsmdtszmksfgn srfgmjnsd mdstzmj'
+            cos_text = """
+            In einem rechtwinkligen Dreieck gibt es drei Seiten: die Hypotenuse, die Ankathete und die Gegenkathete.
+
+            Die Hypotenuse ist die längste Seite des Dreiecks und liegt gegenüber vom rechten Winkel. Sie wird oft mit dem Buchstaben c bezeichnet.
+
+            Die Ankathete ist die Seite, die den Winkel enthält, auf den sich die Frage bezieht. Sie wird oft mit dem Buchstaben a bezeichnet.
+
+            Die Gegenkathete ist die Seite, die dem Winkel gegenüberliegt. Sie wird oft mit dem Buchstaben b bezeichnet.
+
+            Die Beziehungen zwischen diesen Seiten und Winkeln können mit den trigonometrischen Funktionen Sinus, Cosinus und Tangens beschrieben werden. Der Sinus eines Winkels ist das Verhältnis der Länge der Gegenkathete zur Länge der Hypotenuse, der Cosinus eines Winkels ist das Verhältnis der Länge der Ankathete zur Länge der Hypotenuse und der Tangens eines Winkels ist das Verhältnis der Länge der Gegenkathete zur Länge der Ankathete.
+
+            Zusammen bilden die Hypotenuse, die Ankathete und die Gegenkathete ein wichtiges Konzept in der Trigonometrie und sind in vielen Anwendungen nützlich, wie zum Beispiel in der Geometrie, der Physik und der Navigation.
+            """
             self.text.clear()
             self.text.append(cos_text)
 
@@ -604,6 +653,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # add to widget
             self.horizontalLayout_main.addWidget(self.animation_m)
 
+            samlung_text = """
+            In einem rechtwinkligen Dreieck gibt es drei Seiten: die Hypotenuse, die Ankathete und die Gegenkathete.
+
+            Die Hypotenuse ist die längste Seite des Dreiecks und liegt gegenüber vom rechten Winkel. Sie wird oft mit dem Buchstaben c bezeichnet.
+
+            Die Ankathete ist die Seite, die den Winkel enthält, auf den sich die Frage bezieht. Sie wird oft mit dem Buchstaben a bezeichnet.
+
+            Die Gegenkathete ist die Seite, die dem Winkel gegenüberliegt. Sie wird oft mit dem Buchstaben b bezeichnet.
+
+            Die Beziehungen zwischen diesen Seiten und Winkeln können mit den trigonometrischen Funktionen Sinus, Cosinus und Tangens beschrieben werden. Der Sinus eines Winkels ist das Verhältnis der Länge der Gegenkathete zur Länge der Hypotenuse, der Cosinus eines Winkels ist das Verhältnis der Länge der Ankathete zur Länge der Hypotenuse und der Tangens eines Winkels ist das Verhältnis der Länge der Gegenkathete zur Länge der Ankathete.
+
+            Zusammen bilden die Hypotenuse, die Ankathete und die Gegenkathete ein wichtiges Konzept in der Trigonometrie und sind in vielen Anwendungen nützlich, wie zum Beispiel in der Geometrie, der Physik und der Navigation.
+            """
+            self.text.clear()
+            self.text.append(samlung_text)
+
 
             # some logic
             """
@@ -612,8 +677,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.ydata = [random.randint(0, 10) for i in range(n_data)]
             """
 
-            self.xdata = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
-            self.ydata = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
+            #self.xdata = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
+            #self.ydata = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
+            
+        
+            self.xdata = np.arange(0, 2*np.pi, 0.01)
+            
 
             self.update_plot()
             self.show()
@@ -626,10 +695,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def update_plot(self):
         # Drop off the first y element, append a new one.
-        self.ydata = self.ydata[1:] + [random.random()]
+        self.xdata = self.xdata[1:] + [0.1]
         if self.animation_m != None:
             self.animation_m.axes.cla()  # Clear the canvas.
-            self.animation_m.axes.plot(self.xdata, self.ydata, 'r')
+            self.animation_m.axes.plot(self.xdata, np.sin(self.xdata), 'r')
             
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()
