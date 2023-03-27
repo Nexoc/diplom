@@ -670,19 +670,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.text.append(samlung_text)
 
 
-            # some logic
-            """
-            n_data = 50
-            self.xdata = list(range(n_data))
-            self.ydata = [random.randint(0, 10) for i in range(n_data)]
-            """
-
-            #self.xdata = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
-            #self.ydata = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1]
-            
-        
-            self.xdata = np.arange(0, 2*np.pi, 0.01)
-            
+            # 
+            n_data = 30                          
+            self.xdata = np.arange(0, n_data, 0.1)
 
             self.update_plot()
             self.show()
@@ -695,7 +685,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def update_plot(self):
         # Drop off the first y element, append a new one.
-        self.xdata = self.xdata[1:] + [0.1]
+        self.xdata = self.xdata[1:] + [0.01]
         if self.animation_m != None:
             self.animation_m.axes.cla()  # Clear the canvas.
             self.animation_m.axes.plot(self.xdata, np.sin(self.xdata), 'r')
