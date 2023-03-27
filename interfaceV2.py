@@ -2,7 +2,7 @@ import PyQt5.QtWidgets as pq5
 from PyQt5 import uic, QtGui
 from PyQt5.QtCore import QPropertyAnimation
 # import sin_cos.main_1 as marat
-import sin_cos.main as marat
+import main as marat
 # from GUI.sin_cos.sin_cos import Ui_MainWindow
 
 

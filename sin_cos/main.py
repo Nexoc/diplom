@@ -531,8 +531,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
         else:
             self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
-                              x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
-                              x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0])     
+                              x_gegenkathete=[self.gegenkathete, abs(self.gegenkathete)], y_gegenkathete=[self.ankathete, 0], 
+                              x_ankathete=[0, abs(self.gegenkathete)], y_ankathete=[0, 0])     
         # add new 
         self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
 
