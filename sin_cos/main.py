@@ -669,7 +669,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # The initialization of the new canvas  
             self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
             # addWidget(*Widget, row, column, rowspan, colspan)
-            self.horizontalLayout_main.addWidget(self.animation_m, )
+            self.horizontalLayout_main.addWidget(self.animation_m, 0, 1, 1, 1)
 
             # self.xdata = list(range(100))
             self.xdata = np.arange(0, 30, 0.1)
@@ -677,7 +677,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.update_canvas()
             self.show()
             self.timer = QTimer()
-            self.timer.setInterval(1000)
+            self.timer.setInterval(100)
             self.timer.timeout.connect(self.update_canvas)
             self.timer.start()
 
@@ -687,7 +687,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.xdata = self.xdata[1:] + self.xdata[0]
         if self.animation_m != None:
             self.animation_m.axes.cla()  # Clear the canvas.
-            self.animation_m.axes.plot(self.xdata, np.sin(self.xdata), 'r')
+            # self.canvas.axes.plot(self.xdata, np.sin(self.xdata), 'o-r', alpha=0.7, label = 'Hypotenuse', lw=5, mec='b', mew=2, ms=10)
+            self.animation_m.axes.plot(self.xdata, np.sin(self.xdata), 'o-r', alpha=0.7, label = 'Hypotenuse', lw=5, mec='b', mew=2, ms=10)
             self.animation_m.axes.plot()
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()

@@ -120,7 +120,6 @@ class Canvas(FigureCanvas):
         self.ax.set_title("Graph")
         self.ax.set_xlabel('X Axe')
         self.ax.set_ylabel('Y Axe')
-        # plt.grid(color='r', linestyle='dotted', linewidth=1)
 
         # margin
         self.animation_canvas.move(10, 15)
