@@ -152,7 +152,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Setup a timer to trigger the redraw by calling update_plot.
         self.timer = QtCore.QTimer()
-        self.timer.setInterval(100)
+        self.timer.setInterval(300)
         self.timer.timeout.connect(self.update_plot)
         self.timer.start()
 
@@ -164,7 +164,9 @@ class MainWindow(QtWidgets.QMainWindow):
         # Trigger the canvas to update and redraw.
         self.canvas.draw()
 
-
-"""app = QtWidgets.QApplication(sys.argv)
+"""
+app = QtWidgets.QApplication(sys.argv)
 w = MainWindow()
-app.exec_()"""
+app.exec_()
+
+"""

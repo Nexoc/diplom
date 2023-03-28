@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import QTextBrowser, QLineEdit, QLabel
 
 import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
+from matplotlib_sin import CircleAnimation, SinusAnimation
 
 # http://schulphysikwiki.de/index.php/Animation:_Sinus_und_Cosinus_im_Einheitskreis
 
@@ -390,7 +391,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #######################################################################################
          #                                  frame for right site                            #
         #######################################################################################
-##########-----------------------------------------------------------------------------------------------------------------        
+     
         self.content_frame = QtWidgets.QFrame(self.rightS)
         self.content_frame.setMinimumSize(QSize(0, 36))
         self.content_frame.setMaximumSize(QSize(16777215, 36))
@@ -409,7 +410,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text.setAcceptRichText(True)
         self.text.setOpenExternalLinks(True)
         # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.text, 0, 0, 2, 1)
+        self.horizontalLayout_main.addWidget(self.text, 0, 0, 4, 2)
         self.text_content = """ 
             <div>
                 <b style='color:blue'>Sinus</b> und <b style='color:blue'>Cosinus</b> sind zwei mathematische Funktionen, 
@@ -432,7 +433,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 sowie um periodische Phänomene wie Wellen und Vibrationen zu modellieren.
             </div>
             """
-                
+        self.text.setFixedWidth(600)       
         self.text.append(self.text_content)
 
 
@@ -553,7 +554,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #########################################################################################  
 
         # remove old
-        self.remove_canvas(1)  
+        self.remove_canvas()  
         
         # init new
         if self.ankathete == None:
@@ -576,54 +577,34 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                               x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0], arc=self.degrie)     
         
         # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas, 0, 1, 2, 1)
+        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas, 0, 2, 4, 2)
 
         self.text.clear()
         self.text.append(self.text_content)
 
         # init input
         self.grad = QLineEdit()
-        self.grad.setAlignment(Qt.AlignVCenter)
-        self.grad.setValidator(QIntValidator(bottom=0, top=360))
+        self.grad.setFixedWidth(90)
+        self.grad.setAlignment(Qt.AlignRight)
+        self.grad.setValidator(QIntValidator())
         self.grad.setFont(QFont("Arial",20))
         # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.grad, 0, 2, 1, 1)
-
+        self.horizontalLayout_main.addWidget(self.grad, 0, 4, 1, 1)
 
         self.label_grad = QLabel(self)
         self.label_grad.setText("<b>° Grad</b>")
         self.label_grad.setFont(QFont("Arial",20))
-        self.label_grad.setAlignment(Qt.AlignCenter)
+        self.label_grad.setAlignment(Qt.AlignRight)
         self.label_grad.setBuddy(self.grad)
         # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.label_grad, 0, 3, 1, 1)
+        self.horizontalLayout_main.addWidget(self.label_grad, 1, 4, 1, 1)
 
-        #######################################################################
-        """
-                # init 2 input
-        self.gra = QLineEdit()
-        self.gra.setAlignment(Qt.AlignVCenter)
-        self.gra.setValidator(QIntValidator(bottom=0, top=360))
-        self.gra.setFont(QFont("Arial",20))
-        # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.gra, 1, 2, 1, 1)
-
-
-        self.label_gra = QLabel(self)
-        self.label_gra.setText("<b>° Gra</b>")
-        self.label_gra.setFont(QFont("Arial",20))
-        self.label_gra.setAlignment(Qt.AlignCenter)
-        self.label_gra.setBuddy(self.grad)
-        # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.label_gra, 1, 3, 1, 1)
-        """
+        self.grad.returnPressed.connect(self.update_text)  
+        # self.grad.textChanged.connect(self.update_text)    
         
         # self._timer = self.canvas.dynamic_canvas.new_timer(1)
         # self._timer.add_callback(self._update_canvas)
         # self._timer.start()
-        
-        # self.grad.textChanged.connect(self.update_text)
-        self.grad.returnPressed.connect(self.update_text)
 
         # change the frame_content into "1"
         self.frame_content = 1
@@ -641,7 +622,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # The initialization of the new canvas
             self.canvas.triangle()
             # delete the old canvas
-            self.remove_canvas(2) 
+            self.remove_canvas() 
             # add the new canvas
             # addWidget(*Widget, row, column, rowspan, colspan)
             self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas, 0, 1, 1, 1)
@@ -674,50 +655,43 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.label.setText(self._translate("MainWindow", "Formeln Samlung"))
   
         if self.frame_content != 3:
-            self.remove_canvas(3)  
+            self.remove_canvas()  
             self.frame_content = 3
-            # The initialization of the new canvas
-            self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
-            # addWidget(*Widget, row, column, rowspan, colspan)
-            self.horizontalLayout_main.addWidget(self.animation_m, 0, 1, 1, 1)
 
             samlung_text = """
-            In einem rechtwinkligen Dreieck gibt es drei Seiten: die Hypotenuse, die Ankathete und die Gegenkathete.
-
-            Die Hypotenuse ist die längste Seite des Dreiecks und liegt gegenüber vom rechten Winkel. Sie wird oft mit dem Buchstaben c bezeichnet.
-
-            Die Ankathete ist die Seite, die den Winkel enthält, auf den sich die Frage bezieht. Sie wird oft mit dem Buchstaben a bezeichnet.
-
-            Die Gegenkathete ist die Seite, die dem Winkel gegenüberliegt. Sie wird oft mit dem Buchstaben b bezeichnet.
-
-            Die Beziehungen zwischen diesen Seiten und Winkeln können mit den trigonometrischen Funktionen Sinus, Cosinus und Tangens beschrieben werden. Der Sinus eines Winkels ist das Verhältnis der Länge der Gegenkathete zur Länge der Hypotenuse, der Cosinus eines Winkels ist das Verhältnis der Länge der Ankathete zur Länge der Hypotenuse und der Tangens eines Winkels ist das Verhältnis der Länge der Gegenkathete zur Länge der Ankathete.
-
-            Zusammen bilden die Hypotenuse, die Ankathete und die Gegenkathete ein wichtiges Konzept in der Trigonometrie und sind in vielen Anwendungen nützlich, wie zum Beispiel in der Geometrie, der Physik und der Navigation.
+            Zusammen bilden die Hypotenuse, die Ankathete und die Gegenkathete 
+            ein wichtiges Konzept in der Trigonometrie und sind in vielen Anwendungen nützlich, 
+            wie zum Beispiel in der Geometrie, der Physik und der Navigation.
             """
             self.text.clear()
             self.text.append(samlung_text)
 
-            n_data = 30                          
-            self.xdata = np.arange(0, n_data, 0.1)
+            # The initialization of the new canvas  
+            self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
+            # addWidget(*Widget, row, column, rowspan, colspan)
+            self.horizontalLayout_main.addWidget(self.animation_m, )
 
-            self.update_plot()
+            # self.xdata = list(range(100))
+            self.xdata = np.arange(0, 30, 0.1)
+
+            self.update_canvas()
             self.show()
-
-            # Setup a timer to trigger the redraw by calling update_plot.
             self.timer = QTimer()
-            self.timer.setInterval(100)
-            self.timer.timeout.connect(self.update_plot)
+            self.timer.setInterval(1000)
+            self.timer.timeout.connect(self.update_canvas)
             self.timer.start()
 
-    def update_plot(self):
+
+    def update_canvas(self):
         # Drop off the first y element, append a new one.
-        self.xdata = self.xdata[1:] + [0.01]
+        self.xdata = self.xdata[1:] + self.xdata[0]
         if self.animation_m != None:
             self.animation_m.axes.cla()  # Clear the canvas.
             self.animation_m.axes.plot(self.xdata, np.sin(self.xdata), 'r')
-            
+            self.animation_m.axes.plot()
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()
+
 
     def update_text(self):
         self.text_content = self.grad.text()
@@ -746,28 +720,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ankathete = math.sin(math.radians(self.degrie))
         self.gegenkathete = math.cos(math.radians(self.degrie))
          
-    def _update_canvas(self):
-
-        # s = size in pixel
-        # marker = . see https://matplotlib.org/stable/api/markers_api.html#module-matplotlib.markers
-        x_1 = random.random()
-        x_2 = random.random()
-        y_1 = random.random()
-        y_2 = random.random()
-
-        self.canvas.ax.scatter(x=x_1, y=y_1, s=4, marker='h', color="yellow")
-        self.canvas.ax.scatter(x=x_2, y=y_2, s=4, marker='h', color="green")
-
-        
-        # to draw the point on the canvas
-        self.canvas._scatter.figure.canvas.draw()
-        # self.canvas.ax.cla()
-
-        if 6 == 7:
-            self._timer.stop()
-
-
-    def remove_canvas(self, check):
+    def remove_canvas(self):
         # remove dynamic_canvas and input field
         if self.frame_content == 1:
             self.horizontalLayout_main.removeWidget(self.canvas.dynamic_canvas)
@@ -842,8 +795,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         '''
         print('back_ button')
         self.setWindowTitle("???????????????????????????")
-        uic.loadUi("GUI/base.ui", self) 
-        self.menuButton.clicked.connect(self.menu)
+        #uic.loadUi("GUI/base.ui", self) 
+        #self.menuButton.clicked.connect(self.menu)
 
 
 def main():
