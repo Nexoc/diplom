@@ -552,8 +552,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
          #                                Canvas(matplotlib)                                   #
         #########################################################################################  
 
-                # check if we are one the same Canvas
-
         # remove old
         self.remove_canvas(1)  
         
@@ -699,8 +697,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.text.clear()
             self.text.append(samlung_text)
 
-
-            # 
             n_data = 30                          
             self.xdata = np.arange(0, n_data, 0.1)
 
@@ -746,15 +742,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text.append(self.text_content)
         self.sinus()
 
-
     def counting(self, r=1):
         self.ankathete = math.sin(math.radians(self.degrie))
         self.gegenkathete = math.cos(math.radians(self.degrie))
-
-        print(f'{self.degrie=}')
-        print(f"{self.ankathete=}, {self.gegenkathete=}")          
-
-
+         
     def _update_canvas(self):
 
         # s = size in pixel

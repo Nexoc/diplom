@@ -87,7 +87,6 @@ class Canvas(FigureCanvas):
 
         # Winkel Arc
         arc_angles = linspace(0 * pi, pi/4, 30)
-        print(f'{arc_angles=}')
         arc_xs = 0.3 * cos(arc_angles)
         arc_ys = 0.3 * sin(arc_angles)
         self.ax.plot(arc_xs, arc_ys, color = 'yellow', lw = 3)
