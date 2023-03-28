@@ -359,7 +359,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #######################################################################################
          #                       Horizontal Box layout for main content                      # 
         ####################################################################################### 
-        self.horizontalLayout_main = QtWidgets.QHBoxLayout(self.horizontalWidget_content)
+        # QGridLayout QHBoxLayout
+        # // addWidget(*Widget, row, column, rowspan, colspan)
+        # // 0th row
+        # gridLayout->addWidget(b1,0,0,1,1);
+        self.horizontalLayout_main = QtWidgets.QGridLayout(self.horizontalWidget_content)
         self.horizontalLayout_main.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_main.setObjectName("horizontalLayout_main")
 
@@ -377,8 +381,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.widget_2.setGeometry(QRect(top1, left1, width1, height1))
         self.widget_2.setObjectName("widget_2")
 
-        # addWidget to HL main content
-        self.horizontalLayout_main.addWidget(self.widget_main)
+        # addWidget to main content
+        self.horizontalLayout_main.addWidget(self.widget_main, 0, 0, 1, 1)
 
         self.verticalLayout.addWidget(self.frame_main)
 
@@ -403,7 +407,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text = QTextBrowser()
         self.text.setAcceptRichText(True)
         self.text.setOpenExternalLinks(True)
-        self.horizontalLayout_main.addWidget(self.text, 1)
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.text, 0, 0, 2, 1)
         self.text_content = """ 
             <div>
                 <b style='color:blue'>Sinus</b> und <b style='color:blue'>Cosinus</b> sind zwei mathematische Funktionen, 
@@ -570,8 +575,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
                               x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
                               x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0], arc=self.degrie)     
-        # add new 
-        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas)
+        
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas, 0, 1, 2, 1)
 
         self.text.clear()
         self.text.append(self.text_content)
@@ -581,7 +587,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.grad.setAlignment(Qt.AlignVCenter)
         self.grad.setValidator(QIntValidator(bottom=0, top=360))
         self.grad.setFont(QFont("Arial",20))
-        self.horizontalLayout_main.addWidget(self.grad)
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.grad, 0, 2, 2, 1)
 
 
         self.label_grad = QLabel(self)
@@ -589,7 +596,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.label_grad.setFont(QFont("Arial",20))
         self.label_grad.setAlignment(Qt.AlignCenter)
         self.label_grad.setBuddy(self.grad)
-        self.horizontalLayout_main.addWidget(self.label_grad)
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.label_grad, 0, 3, 2, 1)
+        
         
         # self._timer = self.canvas.dynamic_canvas.new_timer(1)
         # self._timer.add_callback(self._update_canvas)
@@ -616,7 +625,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # delete the old canvas
             self.remove_canvas(2) 
             # add the new canvas
-            self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas)
+            # addWidget(*Widget, row, column, rowspan, colspan)
+            self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas, 0, 1, 1, 1)
             
             cos_text = """
             In einem rechtwinkligen Dreieck gibt es drei Seiten: die Hypotenuse, die Ankathete und die Gegenkathete.
@@ -650,8 +660,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.frame_content = 3
             # The initialization of the new canvas
             self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
-            # add to widget
-            self.horizontalLayout_main.addWidget(self.animation_m)
+            # addWidget(*Widget, row, column, rowspan, colspan)
+            self.horizontalLayout_main.addWidget(self.animation_m, 0, 1, 1, 1)
 
             samlung_text = """
             In einem rechtwinkligen Dreieck gibt es drei Seiten: die Hypotenuse, die Ankathete und die Gegenkathete.
