@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import QTextBrowser, QLineEdit, QLabel
 import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
 
+# http://schulphysikwiki.de/index.php/Animation:_Sinus_und_Cosinus_im_Einheitskreis
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
