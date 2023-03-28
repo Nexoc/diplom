@@ -589,7 +589,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.grad.setValidator(QIntValidator(bottom=0, top=360))
         self.grad.setFont(QFont("Arial",20))
         # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.grad, 0, 2, 2, 1)
+        self.horizontalLayout_main.addWidget(self.grad, 0, 2, 1, 1)
 
 
         self.label_grad = QLabel(self)
@@ -598,8 +598,27 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.label_grad.setAlignment(Qt.AlignCenter)
         self.label_grad.setBuddy(self.grad)
         # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.label_grad, 0, 3, 2, 1)
-        
+        self.horizontalLayout_main.addWidget(self.label_grad, 0, 3, 1, 1)
+
+        #######################################################################
+        """
+                # init 2 input
+        self.gra = QLineEdit()
+        self.gra.setAlignment(Qt.AlignVCenter)
+        self.gra.setValidator(QIntValidator(bottom=0, top=360))
+        self.gra.setFont(QFont("Arial",20))
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.gra, 1, 2, 1, 1)
+
+
+        self.label_gra = QLabel(self)
+        self.label_gra.setText("<b>° Gra</b>")
+        self.label_gra.setFont(QFont("Arial",20))
+        self.label_gra.setAlignment(Qt.AlignCenter)
+        self.label_gra.setBuddy(self.grad)
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.label_gra, 1, 3, 1, 1)
+        """
         
         # self._timer = self.canvas.dynamic_canvas.new_timer(1)
         # self._timer.add_callback(self._update_canvas)
