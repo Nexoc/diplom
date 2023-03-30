@@ -12,6 +12,122 @@ from canvas import Canvas
 # from canvas_1 import MplCanvas
 
 
+
+"""
+    def sinus(self):
+        '''
+        description
+        '''
+        print('sinus button') 
+        # Set the window title and the main label
+        self.setWindowTitle(self._translate("MainWindow", "Sinus"))
+        self.label.setText(self._translate("MainWindow", "Sinus"))
+
+
+        #########################################################################################
+         #                                Canvas(matplotlib)                                   #
+        #########################################################################################  
+
+        # remove old
+        self.remove_canvas()  
+        
+        # init new
+        if self.ankathete == None:
+            self.text_content = '''
+                    Der Sinus ist eine trigonometrische Funktion, die sich auf das Verhältnis der Länge der Seite gegenüber einem Winkel in einem rechtwinkligen Dreieck zur Länge der Hypotenuse (der längsten Seite) des Dreiecks bezieht. Mit anderen Worten, der Sinus eines Winkels theta ist das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
+
+                    Die Sinusfunktion wird oft als sin abgekürzt und ist eine periodische Funktion mit einer Periode von 2π (radian). Das bedeutet, dass der Sinus einer bestimmten Winkelgröße in einem rechtwinkligen Dreieck gleich ist wie der Sinus des gleichen Winkels, der um 360 Grad (oder 2π) erhöht oder verringert ist.
+
+                    Der Sinus ist in vielen Bereichen der Mathematik und Wissenschaften nützlich. Zum Beispiel kann er verwendet werden, um die Höhe eines Objekts zu berechnen, wenn die Entfernung und der Winkel zur Spitze des Objekts bekannt sind. Er kann auch verwendet werden, um die Auslenkung eines schwingenden Objekts zu modellieren, wie zum Beispiel bei einem Pendel.
+
+                    Es gibt auch eine Reihe von Identitäten und Formeln, die den Sinus betreffen. Eine bekannte Identität ist die Sinus-Addition-Formel, die das Verhältnis von Sinus und Cosinus für die Summe oder Differenz von zwei Winkeln beschreibt. Eine andere wichtige Formel ist die Sinus-Regel, die das Verhältnis von Seiten und Winkeln in einem allgemeinen Dreieck beschreibt.
+
+                    Insgesamt ist der Sinus eine wichtige Funktion in der Mathematik und den Wissenschaften, die in vielen Anwendungen verwendet wird.
+                    '''
+            self.text.append(self.text_content)
+            self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
+        else:
+            self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
+                              x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
+                              x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0], arc=self.degrie)     
+        
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas, 0, 2, 4, 2)
+
+        self.text.clear()
+        self.text.append(self.text_content)
+
+        # init input
+        self.grad = QLineEdit()
+        self.grad.setFixedWidth(90)
+        self.grad.setAlignment(Qt.AlignRight)
+        self.grad.setValidator(QIntValidator())
+        self.grad.setFont(QFont("Arial",20))
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.grad, 0, 4, 1, 1)
+
+        self.label_grad = QLabel(self)
+        self.label_grad.setText("<b>° Grad</b>")
+        self.label_grad.setFont(QFont("Arial",20))
+        self.label_grad.setAlignment(Qt.AlignRight)
+        self.label_grad.setBuddy(self.grad)
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.label_grad, 1, 4, 1, 1)
+
+        self.grad.returnPressed.connect(self.update_text)  
+        # self.grad.textChanged.connect(self.update_text)    
+        
+        # self._timer = self.canvas.dynamic_canvas.new_timer(1)
+        # self._timer.add_callback(self._update_canvas)
+        # self._timer.start()
+
+        # change the frame_content into "1"
+        self.frame_content = 1
+
+
+
+
+    def folmeln_samlung(self):
+        '''
+        description
+        '''
+        print('folmeln_samlung_button')  
+        self.setWindowTitle(self._translate("MainWindow", "Formeln Samlung"))
+        self.label.setText(self._translate("MainWindow", "Formeln Samlung"))
+  
+        if self.frame_content != 3:
+            self.remove_canvas()  
+            self.frame_content = 3
+
+            samlung_text = '''
+            Zusammen bilden die Hypotenuse, die Ankathete und die Gegenkathete 
+            ein wichtiges Konzept in der Trigonometrie und sind in vielen Anwendungen nützlich, 
+            wie zum Beispiel in der Geometrie, der Physik und der Navigation.
+            '''
+            self.text.clear()
+            self.text.append(samlung_text)
+
+            # The initialization of the new canvas  
+            self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
+            # addWidget(*Widget, row, column, rowspan, colspan)
+            self.horizontalLayout_main.addWidget(self.animation_m, )
+
+            # self.xdata = list(range(100))
+            self.xdata = np.arange(0, 30, 0.1)
+
+            self.update_canvas()
+            self.show()
+            self.timer = QTimer()
+            self.timer.setInterval(1000)
+            self.timer.timeout.connect(self.update_canvas)
+            self.timer.start()
+
+
+"""
+
+
+
+
 class ApplicationWindow(QtWidgets.QMainWindow):
     """
     This "window" is a QWidget.

@@ -650,36 +650,66 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         '''
         description
         '''
-        print('folmeln_samlung_button')  
-        self.setWindowTitle(self._translate("MainWindow", "Formeln Samlung"))
-        self.label.setText(self._translate("MainWindow", "Formeln Samlung"))
-  
-        if self.frame_content != 3:
-            self.remove_canvas()  
-            self.frame_content = 3
+        print('sinus button') 
+        # Set the window title and the main label
+        self.setWindowTitle(self._translate("MainWindow", "animation"))
+        self.label.setText(self._translate("MainWindow", "SAnimation"))
+        # text Feld width 100
+        self.text.setFixedWidth(200)   
 
-            samlung_text = """
-            Zusammen bilden die Hypotenuse, die Ankathete und die Gegenkathete 
-            ein wichtiges Konzept in der Trigonometrie und sind in vielen Anwendungen nützlich, 
-            wie zum Beispiel in der Geometrie, der Physik und der Navigation.
-            """
-            self.text.clear()
-            self.text.append(samlung_text)
 
-            # The initialization of the new canvas  
-            self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
-            # addWidget(*Widget, row, column, rowspan, colspan)
-            self.horizontalLayout_main.addWidget(self.animation_m, )
+        #########################################################################################
+         #                                Canvas(matplotlib)                                   #
+        #########################################################################################  
 
-            # self.xdata = list(range(100))
-            self.xdata = np.arange(0, 30, 0.1)
+        # remove old
+        self.remove_canvas()  
+        
+        # init new
+        if self.ankathete == None:
 
-            self.update_canvas()
-            self.show()
-            self.timer = QTimer()
-            self.timer.setInterval(1000)
-            self.timer.timeout.connect(self.update_canvas)
-            self.timer.start()
+            self.text_content = """
+                    Der Sinus ist eine trigonometrische Funktion, 
+                    die sich auf das Verhältnis der Länge der Seite gegenüber 
+                    einem Winkel in einem rechtwinkligen Dreieck zur Länge 
+                    der Hypotenuse (der längsten Seite) des Dreiecks bezieht. 
+                    Mit anderen Worten, der Sinus eines Winkels theta ist 
+                    das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
+                    """
+            self.text.append(self.text_content)
+            self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
+        else:
+            self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
+                              x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
+                              x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0], arc=self.degrie)     
+        
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas, 0, 1, 4, 2)
+
+        ###########
+        # 2 canvas
+
+        self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        # self.horizontalLayout_main.addWidget(self.label_grad, 1, 4, 1, 1)
+        self.horizontalLayout_main.addWidget(self.animation_m, 0, 3, 4, 2)
+
+        # self.xdata = list(range(100))
+        self.xdata = np.arange(0, 30, 0.1)
+
+        self.update_canvas()
+        self.show()
+        self.timer = QTimer()
+        self.timer.setInterval(1000)
+        self.timer.timeout.connect(self.update_canvas)
+        self.timer.start()
+
+
+        self.text.clear()
+        self.text.append(self.text_content)
+
+
+        self.frame_content = 1
 
 
     def update_canvas(self):
