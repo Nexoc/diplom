@@ -143,9 +143,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.canvas = MplCanvas(self, width=5, height=4, dpi=100)
         self.setCentralWidget(self.canvas)
 
-        n_data = 50
-        self.xdata = list(range(n_data))
-        self.ydata = [random.randint(0, 10) for i in range(n_data)]
+        self.xdata = np.arange(0, 50, .5)
+        
         self.update_plot()
 
         self.show()
@@ -158,15 +157,18 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def update_plot(self):
         # Drop off the first y element, append a new one.
-        self.ydata = self.ydata[1:] + [random.randint(0, 10)]
+        self.xdata = self.xdata[1:] + [0.01]
         self.canvas.axes.cla()  # Clear the canvas.
-        self.canvas.axes.plot(self.xdata, self.ydata, 'r')
+        #self.canvas.axes.plot(self.xdata, np.sin(self.xdata), 'r')
+        self.canvas.axes.plot(self.xdata, np.sin(self.xdata), 'o-r', alpha=0.7, label = 'Hypotenuse', lw=5, mec='b', mew=2, ms=10)
+        #self.ax.scatter(x=self.xdata[0], y=np.sin(self.xdata[0]), s=5, marker='.', color='black', alpha=0.1)
         # Trigger the canvas to update and redraw.
         self.canvas.draw()
 
 """
-app = QtWidgets.QApplication(sys.argv)
-w = MainWindow()
-app.exec_()
+if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    w = MainWindow()
+    app.exec_()
 
 """
