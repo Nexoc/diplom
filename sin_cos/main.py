@@ -666,25 +666,35 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.remove_canvas()  
         
         # init new
-        if self.ankathete == None:
 
-            self.text_content = """
-                    Der Sinus ist eine trigonometrische Funktion, 
-                    die sich auf das Verhältnis der Länge der Seite gegenüber 
-                    einem Winkel in einem rechtwinkligen Dreieck zur Länge 
-                    der Hypotenuse (der längsten Seite) des Dreiecks bezieht. 
-                    Mit anderen Worten, der Sinus eines Winkels theta ist 
-                    das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
-                    """
-            self.text.append(self.text_content)
-            self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
-        else:
-            self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
-                              x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
-                              x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0], arc=self.degrie)     
-        
+
+        self.text_content = """
+                Der Sinus ist eine trigonometrische Funktion, 
+                die sich auf das Verhältnis der Länge der Seite gegenüber 
+                einem Winkel in einem rechtwinkligen Dreieck zur Länge 
+                der Hypotenuse (der längsten Seite) des Dreiecks bezieht. 
+                Mit anderen Worten, der Sinus eines Winkels theta ist 
+                das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
+                """
+        self.text.append(self.text_content)
+        self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
+  
         # addWidget(*Widget, row, column, rowspan, colspan)
         self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas, 0, 1, 4, 2)
+       
+
+        """      
+        self.degrie = 0
+        while self.degrie !=360:
+            self.degrie += 1
+            self.counting() 
+            time.sleep(100)
+            self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
+                    x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
+                    x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0], arc=self.degrie)  
+
+
+        """
 
         ###########
         # 2 canvas
