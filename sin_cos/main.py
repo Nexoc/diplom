@@ -13,9 +13,12 @@ from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, Q
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QIntValidator
 from PyQt5.QtWidgets import QTextBrowser, QLineEdit, QLabel
 
-import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
-from matplotlib_sin import CircleAnimation, SinusAnimation
+# from sin_cos.canvas import Canvas, MplCanvas
+
+# import sin_matplotlib as main_animation
+# from matplotlib_sin import CircleAnimation, SinusAnimation
+# import interfaceV2 as ferdi 
 
 # http://schulphysikwiki.de/index.php/Animation:_Sinus_und_Cosinus_im_Einheitskreis
 
@@ -775,6 +778,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         '''
         description
         '''
+        
         print('project 2')
 
     def project_3(self):
@@ -794,7 +798,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         description
         '''
         print('back_ button')
-        self.setWindowTitle("???????????????????????????")
+        self.window = ferdi.MainGUI()
+        self.window.show()
+        self.close()
+
+        #self.setWindowTitle("???????????????????????????")
         #uic.loadUi("GUI/base.ui", self) 
         #self.menuButton.clicked.connect(self.menu)
 

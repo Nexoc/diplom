@@ -2,7 +2,7 @@ import PyQt5.QtWidgets as pq5
 from PyQt5 import uic, QtGui
 from PyQt5.QtCore import QPropertyAnimation
 # import sin_cos.main_1 as marat
-import main as marat
+import sin_cos.main as marat
 # from GUI.sin_cos.sin_cos import Ui_MainWindow
 
 
@@ -47,9 +47,14 @@ class MainGUI(pq5.QMainWindow):
         description
         '''
         print('1')
-        self.close()
+        
         # marat.Physic(self)
-        marat.main() # to check if it works
+        #marat.main() # to check if it works
+        # self.close()
+
+        self.window = marat.ApplicationWindow()
+        self.window.show()
+        self.close()
 
 
     def project_2(self):
