@@ -11,6 +11,7 @@ from matplotlib.backends.qt_compat import QtWidgets
 import matplotlib.pyplot as plt
 from matplotlib_sin import CircleAnimation, SinusAnimation
 import matplotlib.ticker as ticker
+import matplotlib.patches as plt_arc
 
 from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QIntValidator
@@ -673,82 +674,76 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
                 """
         self.text.append(self.text_content)
-
+ 
         # canvas
         self.animation_m = MplCanvas(self, width=5, height=5, dpi=80)   
-        self.horizontalLayout_main.addWidget(self.animation_m, 0, 1, 4, 2)
+        self.horizontalLayout_main.addWidget(self.animation_m, 0, 0, 2, 4)
 
-        self.xdata = np.arange(0, 36, 0.1)
-        self.ydata = np.arange(start=0, stop=3, step=0.02777777779)
+
+        self.xdata = np.arange(0, 6.4, 0.1)
         self.update_canvas()
         self.show()
         self.timer = QTimer()
         self.timer.setInterval(100)
         self.timer.timeout.connect(self.update_canvas)
         self.timer.start()
-
+        
         self.frame_content = 3
-
+     
 
     def update_canvas(self):
         # Drop off the first y element, append a new one.
         if len(self.xdata) == 1:
-            self.xdata = np.arange(0, 36, 0.1)
-        if len(self.ydata) == 1:
-            self.ydata = np.arange(start=0, stop=3, step=0.02777777779)
+            self.xdata = np.arange(start=0, stop=6.4, step=0.1)
+
         self.xdata = self.xdata[1:] 
-        self.ydata = self.ydata[1:] 
 
         if self.animation_m != None:
+            
             # first plot
             self.animation_m.axes.cla()  # Clear the canvas.
+            # Kreis
             self.animation_m.axes.plot([0, np.cos(self.xdata[0])], [0, np.sin(self.xdata[0])], 'o-r', alpha=0.7, lw=5, mec='b', mew=2, ms=10)
-            self.animation_m.axes.plot([1, np.cos(self.xdata[0])], [np.sin(self.xdata[0]), np.sin(self.xdata[0])], 'o-g', alpha=0.7, lw=2, mew=1, ms=5)
+            
+            self.animation_m.axes.plot([self.xdata[0]+1, np.cos(self.xdata[0])],                                        
+                                       [np.sin(self.xdata[0]), np.sin(self.xdata[0])],
+                                       'o-g', alpha=0.7, lw=2, mew=1, ms=5)
+            
+            self.animation_m.axes.plot(self.xdata+1, np.sin(self.xdata), 'r', alpha=0.7, lw=5, mec='b', mew=2, ms=10)
+
             self.animation_m.axes.set_ylim([-1, 1])
-            self.animation_m.axes.set_xlim([-1, 1])
-            self.animation_m.axes.set_title("Graph")
-            self.animation_m.axes.set_xlabel('X Axe')
-            self.animation_m.axes.set_ylabel('Y Axe')
+            self.animation_m.axes.set_xlim([-1, 7.3])
+            self.animation_m.axes.set_title("Sinus")
+            # self.animation_m.axes.set_xlabel('X Axe')
+            # self.animation_m.axes.set_ylabel('Y Axe')
             circle1 = plt.Circle((0, 0), 1, color='r', fill=False, alpha=0.7)
             self.animation_m.axes.add_patch(circle1)
-            #self.animation_m.axes.set_aspect('equal', 'box') 
-            self.animation_m.axes.axhline(y=0, color='k')
-            self.animation_m.axes.axvline(x=0, color='k')
-            self.animation_m.axes.grid(axis='both', color='k', linestyle='-', linewidth=.3, alpha=0.7)
+            self.animation_m.axes.set_aspect('equal', 'box') 
 
-            # second plot
-            self.animation_m.axes2.cla() 
-            self.animation_m.axes2.plot([0, self.ydata[0]], [np.sin(self.xdata[0]), np.sin(self.xdata[0])], 'o-g', alpha=0.7, lw=2, mew=1, ms=5)
-            self.animation_m.axes2.set_ylim([-1, 1])
-            self.animation_m.axes2.set_xlim([0, 3])
-            self.animation_m.axes2.set_title("Sinus")
-            #self.animation_m.axes2.set_aspect('equal', 'box') 
-            self.animation_m.axes2.axhline(y=0, color='k')
-            self.animation_m.axes2.axvline(x=0, color='k')
-            self.animation_m.axes2.grid(axis='both', color='k', linestyle='-', linewidth=.3, alpha=0.7)
-            self.animation_m.axes2.get_yaxis().set_visible(False)
 
-            ##########################################
-
+            arc_draw = plt_arc.Wedge(center=0, r=1, theta1=0, theta2=self.xdata[0]*57, width=0.7, fill=True, color='orange', edgecolor="green", alpha=0.5)  
+            self.animation_m.axes.add_patch(arc_draw)
+            # self.animation_m.axes.axhline(y=0, color='k')
+            # self.animation_m.axes.axvline(x=0, color='k')
             
             #  Устанавливаем интервал основных и
             #  вспомогательных делений:
-            self.animation_m.axes2.xaxis.set_major_locator(ticker.MultipleLocator(2))
-            self.animation_m.axes2.xaxis.set_minor_locator(ticker.MultipleLocator(1))
-            self.animation_m.axes2.yaxis.set_major_locator(ticker.MultipleLocator(50))
-            self.animation_m.axes2.yaxis.set_minor_locator(ticker.MultipleLocator(10))
+            self.animation_m.axes.xaxis.set_major_locator(ticker.MultipleLocator(1))
+            self.animation_m.axes.xaxis.set_minor_locator(ticker.MultipleLocator(.1))
+            self.animation_m.axes.yaxis.set_major_locator(ticker.MultipleLocator(5))
+            self.animation_m.axes.yaxis.set_minor_locator(ticker.MultipleLocator(10))
 
 
             #  Настраиваем вид основных тиков:
-            self.animation_m.axes2.tick_params(axis = 'both',    #  Применяем параметры к обеим осям
+            self.animation_m.axes.tick_params(axis = 'both',    #  Применяем параметры к обеим осям
                         which = 'major',    #  Применяем параметры к основным делениям
                         direction = 'inout',    #  Рисуем деления внутри и снаружи графика
                         length = 20,    #  Длинна делений
-                        width = 4,     #  Ширина делений
-                        color = 'm',    #  Цвет делений
+                        width = 5,     #  Ширина делений
+                        color = 'b',    #  Цвет делений
                         pad = 10,    #  Расстояние между черточкой и ее подписью
                         labelsize = 15,    #  Размер подписи
-                        labelcolor = 'r',    #  Цвет подписи
+                        labelcolor = 'b',    #  Цвет подписи
                         bottom = True,    #  Рисуем метки снизу
                         top = True,    #   сверху
                         left = True,    #  слева
@@ -761,12 +756,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
 
             #  Настраиваем вид вспомогательных тиков:
-            self.animation_m.axes2.tick_params(axis = 'both',    #  Применяем параметры к обеим осям
+            self.animation_m.axes.tick_params(axis = 'both',    #  Применяем параметры к обеим осям
                         which = 'minor',    #  Применяем параметры к вспомогательным делениям
                         direction = 'out',    #  Рисуем деления внутри и снаружи графика
                         length = 10,    #  Длинна делений
                         width = 2,     #  Ширина делений
-                        color = 'm',    #  Цвет делений
+                        color = 'b',    #  Цвет делений
                         pad = 10,    #  Расстояние между черточкой и ее подписью
                         labelsize = 15,    #  Размер подписи
                         labelcolor = 'r',    #  Цвет подписи
@@ -776,23 +771,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         right = True)    #  и справа
                         
             #  Добавляем линии основной сетки:
-            self.animation_m.axes2.grid(which='major',
-                    color = 'm')
+            self.animation_m.axes.grid(axis='both', which='major',
+                    color = 'b')
 
             #  Включаем видимость вспомогательных делений:
-            self.animation_m.axes2.minorticks_on()
+            self.animation_m.axes.minorticks_on()
 
             #  Теперь можем отдельно задавать внешний вид
             #  вспомогательной сетки:
-            self.animation_m.axes2.grid(which='minor',
+            self.animation_m.axes.grid(axis='both', which='minor',
                     color = 'm',
                     linestyle = ':')
-
-
-            ##########################################
-
-
-
 
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()

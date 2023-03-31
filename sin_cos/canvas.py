@@ -94,12 +94,6 @@ class Canvas(FigureCanvas):
         self.ax.plot(x_ankathete, y_ankathete, 'o-b', alpha=0.7, label = 'Ankathete', lw=5, mec='b', mew=2, ms=10)
 
         # Winkel Arc
-        """
-        arc_angles = linspace(0 * pi, pi/4, 30)
-        arc_xs = 0.3 * cos(arc_angles)
-        arc_ys = 0.3 * sin(arc_angles)
-        self.ax.plot(arc_xs, arc_ys, color = 'yellow', lw = 3)
-        """
         arc_draw = plt_arc.Wedge(center=0, r=.3, theta1=0, theta2=45, width=0.03, fill=True, color='black', edgecolor="green")  
         self.ax.add_patch(arc_draw)
     
@@ -161,7 +155,7 @@ class MplCanvas(FigureCanvas):
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(121)   
-        self.axes2 = fig.add_subplot(122)
+        self.axes = fig.add_subplot(111)   
+        #self.axes2 = fig.add_subplot(122)
         super(MplCanvas, self).__init__(fig)   
  
