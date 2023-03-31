@@ -161,5 +161,7 @@ class MplCanvas(FigureCanvas):
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
+        self.axes = fig.add_subplot(121)   
+        self.axes2 = fig.add_subplot(122)
         super(MplCanvas, self).__init__(fig)   
+ 

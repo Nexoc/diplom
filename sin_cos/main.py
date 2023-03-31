@@ -8,6 +8,9 @@ import math
 import numpy as np
 
 from matplotlib.backends.qt_compat import QtWidgets
+import matplotlib.pyplot as plt
+from matplotlib_sin import CircleAnimation, SinusAnimation
+import matplotlib.ticker as ticker
 
 from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QIntValidator
@@ -15,7 +18,7 @@ from PyQt5.QtWidgets import QTextBrowser, QLineEdit, QLabel
 
 import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
-from matplotlib_sin import CircleAnimation, SinusAnimation
+
 
 # http://schulphysikwiki.de/index.php/Animation:_Sinus_und_Cosinus_im_Einheitskreis
 
@@ -31,6 +34,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text_content = '<div>sin(a) = Gegenkathete durch Hypotenuse<div/><div>cos(a) = Ankathete durch Hypotenuse<div/>'
         self.ankathete = None
         self.gegenkathete = None
+        self.degrie = None
 
         #######################################################################################
          #                              matplotlib initialization                            # 
@@ -547,6 +551,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "Sinus"))
         self.label.setText(self._translate("MainWindow", "Sinus"))
+        self.text.setFixedWidth(500)  
 
 
         #########################################################################################
@@ -601,10 +606,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         self.grad.returnPressed.connect(self.update_text)  
         # self.grad.textChanged.connect(self.update_text)    
-        
-        # self._timer = self.canvas.dynamic_canvas.new_timer(1)
-        # self._timer.add_callback(self._update_canvas)
-        # self._timer.start()
 
         # change the frame_content into "1"
         self.frame_content = 1
@@ -617,6 +618,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         print('cosinus button')
         self.setWindowTitle(self._translate("MainWindow", "Cosinus"))
         self.label.setText(self._translate("MainWindow", "Cosinus"))
+        self.text.setFixedWidth(550)  
         # check if we are one the same Canvas
         if self.frame_content != 2:
             # The initialization of the new canvas
@@ -654,20 +656,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "animation"))
         self.label.setText(self._translate("MainWindow", "SAnimation"))
-        # text Feld width 100
+        # text Feld width 200
         self.text.setFixedWidth(200)   
-
-
         #########################################################################################
          #                                Canvas(matplotlib)                                   #
-        #########################################################################################  
-
+        ######################################################################################### 
         # remove old
-        self.remove_canvas()  
-        
-        # init new
-
-
+        self.remove_canvas()          
+      
         self.text_content = """
                 Der Sinus ist eine trigonometrische Funktion, 
                 die sich auf das Verhältnis der Länge der Seite gegenüber 
@@ -677,58 +673,127 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
                 """
         self.text.append(self.text_content)
-        self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
-  
-        # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.canvas.dynamic_canvas, 0, 1, 4, 2)
-       
 
-        """      
-        self.degrie = 0
-        while self.degrie !=360:
-            self.degrie += 1
-            self.counting() 
-            time.sleep(100)
-            self.canvas.graph(x_hypotenuse=[0, self.gegenkathete], y_hypotenuse=[0, self.ankathete], 
-                    x_gegenkathete=[self.gegenkathete, self.gegenkathete], y_gegenkathete=[self.ankathete, 0], 
-                    x_ankathete=[0, self.gegenkathete], y_ankathete=[0, 0], arc=self.degrie)  
+        # canvas
+        self.animation_m = MplCanvas(self, width=5, height=5, dpi=80)   
+        self.horizontalLayout_main.addWidget(self.animation_m, 0, 1, 4, 2)
 
-
-        """
-
-        ###########
-        # 2 canvas
-
-        self.animation_m = MplCanvas(self, width=5, height=4, dpi=100)   
-        # addWidget(*Widget, row, column, rowspan, colspan)
-        # self.horizontalLayout_main.addWidget(self.label_grad, 1, 4, 1, 1)
-        self.horizontalLayout_main.addWidget(self.animation_m, 0, 3, 4, 2)
-
-        # self.xdata = list(range(100))
-        self.xdata = np.arange(0, 30, 0.1)
-
+        self.xdata = np.arange(0, 36, 0.1)
+        self.ydata = np.arange(start=0, stop=3, step=0.02777777779)
         self.update_canvas()
         self.show()
         self.timer = QTimer()
-        self.timer.setInterval(1000)
+        self.timer.setInterval(100)
         self.timer.timeout.connect(self.update_canvas)
         self.timer.start()
 
-
-        self.text.clear()
-        self.text.append(self.text_content)
-
-
-        self.frame_content = 1
+        self.frame_content = 3
 
 
     def update_canvas(self):
         # Drop off the first y element, append a new one.
-        self.xdata = self.xdata[1:] + self.xdata[0]
+        if len(self.xdata) == 1:
+            self.xdata = np.arange(0, 36, 0.1)
+        if len(self.ydata) == 1:
+            self.ydata = np.arange(start=0, stop=3, step=0.02777777779)
+        self.xdata = self.xdata[1:] 
+        self.ydata = self.ydata[1:] 
+
         if self.animation_m != None:
+            # first plot
             self.animation_m.axes.cla()  # Clear the canvas.
-            self.animation_m.axes.plot(self.xdata, np.sin(self.xdata), 'r')
-            self.animation_m.axes.plot()
+            self.animation_m.axes.plot([0, np.cos(self.xdata[0])], [0, np.sin(self.xdata[0])], 'o-r', alpha=0.7, lw=5, mec='b', mew=2, ms=10)
+            self.animation_m.axes.plot([1, np.cos(self.xdata[0])], [np.sin(self.xdata[0]), np.sin(self.xdata[0])], 'o-g', alpha=0.7, lw=2, mew=1, ms=5)
+            self.animation_m.axes.set_ylim([-1, 1])
+            self.animation_m.axes.set_xlim([-1, 1])
+            self.animation_m.axes.set_title("Graph")
+            self.animation_m.axes.set_xlabel('X Axe')
+            self.animation_m.axes.set_ylabel('Y Axe')
+            circle1 = plt.Circle((0, 0), 1, color='r', fill=False, alpha=0.7)
+            self.animation_m.axes.add_patch(circle1)
+            #self.animation_m.axes.set_aspect('equal', 'box') 
+            self.animation_m.axes.axhline(y=0, color='k')
+            self.animation_m.axes.axvline(x=0, color='k')
+            self.animation_m.axes.grid(axis='both', color='k', linestyle='-', linewidth=.3, alpha=0.7)
+
+            # second plot
+            self.animation_m.axes2.cla() 
+            self.animation_m.axes2.plot([0, self.ydata[0]], [np.sin(self.xdata[0]), np.sin(self.xdata[0])], 'o-g', alpha=0.7, lw=2, mew=1, ms=5)
+            self.animation_m.axes2.set_ylim([-1, 1])
+            self.animation_m.axes2.set_xlim([0, 3])
+            self.animation_m.axes2.set_title("Sinus")
+            #self.animation_m.axes2.set_aspect('equal', 'box') 
+            self.animation_m.axes2.axhline(y=0, color='k')
+            self.animation_m.axes2.axvline(x=0, color='k')
+            self.animation_m.axes2.grid(axis='both', color='k', linestyle='-', linewidth=.3, alpha=0.7)
+            self.animation_m.axes2.get_yaxis().set_visible(False)
+
+            ##########################################
+
+            
+            #  Устанавливаем интервал основных и
+            #  вспомогательных делений:
+            self.animation_m.axes2.xaxis.set_major_locator(ticker.MultipleLocator(2))
+            self.animation_m.axes2.xaxis.set_minor_locator(ticker.MultipleLocator(1))
+            self.animation_m.axes2.yaxis.set_major_locator(ticker.MultipleLocator(50))
+            self.animation_m.axes2.yaxis.set_minor_locator(ticker.MultipleLocator(10))
+
+
+            #  Настраиваем вид основных тиков:
+            self.animation_m.axes2.tick_params(axis = 'both',    #  Применяем параметры к обеим осям
+                        which = 'major',    #  Применяем параметры к основным делениям
+                        direction = 'inout',    #  Рисуем деления внутри и снаружи графика
+                        length = 20,    #  Длинна делений
+                        width = 4,     #  Ширина делений
+                        color = 'm',    #  Цвет делений
+                        pad = 10,    #  Расстояние между черточкой и ее подписью
+                        labelsize = 15,    #  Размер подписи
+                        labelcolor = 'r',    #  Цвет подписи
+                        bottom = True,    #  Рисуем метки снизу
+                        top = True,    #   сверху
+                        left = True,    #  слева
+                        right = True,    #  и справа
+                        labelbottom = True,    #  Рисуем подписи снизу
+                        labeltop = True,    #  сверху
+                        labelleft = True,    #  слева
+                        labelright = True,    #  и справа
+                        labelrotation = 45)    #  Поворот подписей
+
+
+            #  Настраиваем вид вспомогательных тиков:
+            self.animation_m.axes2.tick_params(axis = 'both',    #  Применяем параметры к обеим осям
+                        which = 'minor',    #  Применяем параметры к вспомогательным делениям
+                        direction = 'out',    #  Рисуем деления внутри и снаружи графика
+                        length = 10,    #  Длинна делений
+                        width = 2,     #  Ширина делений
+                        color = 'm',    #  Цвет делений
+                        pad = 10,    #  Расстояние между черточкой и ее подписью
+                        labelsize = 15,    #  Размер подписи
+                        labelcolor = 'r',    #  Цвет подписи
+                        bottom = True,    #  Рисуем метки снизу
+                        top = True,    #   сверху
+                        left = True,    #  слева
+                        right = True)    #  и справа
+                        
+            #  Добавляем линии основной сетки:
+            self.animation_m.axes2.grid(which='major',
+                    color = 'm')
+
+            #  Включаем видимость вспомогательных делений:
+            self.animation_m.axes2.minorticks_on()
+
+            #  Теперь можем отдельно задавать внешний вид
+            #  вспомогательной сетки:
+            self.animation_m.axes2.grid(which='minor',
+                    color = 'm',
+                    linestyle = ':')
+
+
+            ##########################################
+
+
+
+
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()
 
@@ -742,7 +807,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.degrie = 0
         else:
             self.degrie = int(self.text_content) # with validator is always int max from 0 to 999
-            # self.remove_canvas(1)
         self.counting()
         self.text_content = f"<div style='text-align: right;'>Sie haben {self.text_content}° gegeben.</div>\
                          <div style='text-align: right;'>Sinus von {self.degrie}° ist {round(self.ankathete, 2)}</div>\
@@ -754,7 +818,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                          <div style='text-align: right;'>Gegenkathete ist {round(self.gegenkathete, 2)}</div>\
                             "
         self.text.append(self.text_content)
-        self.sinus()
+        if self.frame_content == 1:
+            self.sinus()
 
     def counting(self, r=1):
         self.ankathete = math.sin(math.radians(self.degrie))
