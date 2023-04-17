@@ -51,6 +51,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.sinus_button.clicked.connect(self.sinus)
         self.cosinus_button.clicked.connect(self.cosinus)
         self.folmeln_samlung_button.clicked.connect(self.folmeln_samlung)
+        self.explain_button.clicked.connect(self.explain)
 
         # An animated button of the menu
         self.menuButton.clicked.connect(self.menu)
@@ -353,6 +354,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.folmeln_samlung_button.setObjectName("folmeln_samlung_button")
         self.horizontalLayout_buttons.addWidget(self.folmeln_samlung_button)
 
+        self.explain_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.explain_button.setObjectName("sinus_button")        
+        self.horizontalLayout_buttons.addWidget(self.explain_button)
+
 
         #######################################################################################
          #                                  Widget for Content                              #
@@ -543,7 +548,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.sinus_button.setText(self._translate("MainWindow", "Sinus"))
         self.cosinus_button.setText(self._translate("MainWindow", "Cosinus"))
         self.folmeln_samlung_button.setText(self._translate("MainWindow", "Formeln Samlung"))
+        self.explain_button.setText(self._translate("MainWindow", "Erklärung"))
 
+
+    def explain(self):
+        print('explain')
     def sinus(self):
         '''
         description
@@ -665,14 +674,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # remove old
         self.remove_canvas()          
       
-        self.text_content = """
-                Der Sinus ist eine trigonometrische Funktion, 
-                die sich auf das Verhältnis der Länge der Seite gegenüber 
-                einem Winkel in einem rechtwinkligen Dreieck zur Länge 
-                der Hypotenuse (der längsten Seite) des Dreiecks bezieht. 
-                Mit anderen Worten, der Sinus eines Winkels theta ist 
-                das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
-                """
+        self.text_content = """ """
+        self.text.clear()
         self.text.append(self.text_content)
  
         # canvas
