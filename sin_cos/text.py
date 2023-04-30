@@ -93,3 +93,19 @@ und der anliegenden Kathete <b style="color:blue">Ankathete</b> zur <b style="co
 in Abhängigkeit vom <b style="color:yellow; background-color: #000000;">Winkel Alpha</b>:<br> ändert.
 </div>
 """
+
+explain = """
+Sinus Cosinus Erklärung
+"""
+
+sinus_explain = """
+Sinus ist das Verhältnis der Gegenkathete zur Hypotenuse.
+"""
+
+cosinus_explain = """
+Cosinus ist das Verhältnis der Ankathete zur Hypotenuse.
+"""
+
+tan_explain = """
+Tangente ist das Verhältnisder Gegenkathete zur Ankathete.
+"""

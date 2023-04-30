@@ -16,9 +16,6 @@ class Canvas(FigureCanvas):
     """
     def __init__(self, figure=None):
         super().__init__(figure)
-        self.dynamic_canvas = None
-        self.static_canvas = None
-
 
     def graph(self, x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0], arc = 45):
 
@@ -69,7 +66,7 @@ class Canvas(FigureCanvas):
         self.ax = self.triangle_canvas.figure.subplots()
         self.ax.set_ylim([-0.2, 2])
         self.ax.set_xlim([-0.2, 2])
-        self.ax.set_title("Triangle")
+        self.ax.set_title("Das rechtwinklige Dreieck")
         self.ax.set_xlabel('X Axe')
         self.ax.set_ylabel('Y Axe')
         # margin
@@ -94,6 +91,50 @@ class Canvas(FigureCanvas):
         self.ax.annotate('Gegenkathete', xy=(1.5, 1), xytext=(1.7, 1), arrowprops={'facecolor': 'green', 'shrink': 0.01}, rotation = 270)
         self.ax.annotate('Ankathete', xy=(1, 0), xytext=(1, 0.3), arrowprops={'facecolor': 'blue', 'shrink': 0.01})
         self.ax.annotate('Winkel α', xy=(0.29, 0.1), xytext=(0.5, 0.3), arrowprops={'facecolor': 'yellow', 'shrink': 0.04})
+
+    def triangle2(self):
+        """
+        """
+        # dpi = size
+        self.triangle_canvas2 = FigureCanvas(Figure(figsize=(5, 5), dpi=90))
+        self.ax = self.triangle_canvas2.figure.subplots()
+        self.ax.set_ylim([-0.2, 4])
+        self.ax.set_xlim([-0.2, 4])
+        self.ax.set_title("Das rechtwinklige Dreieck")
+        self.ax.set_xlabel('X Axe')
+        self.ax.set_ylabel('Y Axe')
+        self.ax.set_yticks([])
+        self.ax.set_xticks([])
+
+        # margin
+        self.triangle_canvas2.move(10, 15)
+
+        # The initialization of triangle points
+        x_hypotenuse, y_hypotenuse = [0, 1.5], [0, 1.5]
+        x_gegenkathete, y_gegenkathete = [1.5, 1.5], [1.5, 0]
+        x_ankathete, y_ankathete = [0, 1.5], [0, 0]
+
+        # triaangle plot
+        self.ax.plot(x_hypotenuse, y_hypotenuse, 'o-r', alpha=0.7, label = 'Hypotenuse', lw=5, mec='b', mew=2, ms=10)
+        self.ax.plot(x_gegenkathete, y_gegenkathete, 'o-g', alpha=0.7, label = 'Gegenkathete', lw=5, mec='b', mew=2, ms=10)
+        self.ax.plot(x_ankathete, y_ankathete, 'o-b', alpha=0.7, label = 'Ankathete', lw=5, mec='b', mew=2, ms=10)
+
+        # Winkel Arc
+        arc_draw = plt_arc.Wedge(center=0, r=.3, theta1=0, theta2=45, width=0.03, fill=True, color='black', edgecolor="green")  
+        self.ax.add_patch(arc_draw)
+    
+        # The initialization of line points right site
+        x_ankathete, y_ankathete = [2.5, 2.5], [2.4, 0]  
+        x_hypotenuse, y_hypotenuse = [2.7, 2.7], [0, 3]  
+
+        x_gegenkathete, y_gegenkathete = [3.6, 3.6], [1.5, 0] 
+        x_hypotenuse2, y_hypotenuse2 = [3.8, 3.8], [0, 3]  
+
+        # Lines plot
+        self.ax.plot(x_hypotenuse, y_hypotenuse, 'o-r', alpha=0.7, label = 'Hypotenuse', lw=5, mec='b', mew=2, ms=10)
+        self.ax.plot(x_ankathete, y_ankathete, 'o-b', alpha=0.7, label = 'Gegenkathete', lw=5, mec='b', mew=2, ms=10)
+        self.ax.plot(x_gegenkathete, y_gegenkathete, 'o-g', alpha=0.7, label = 'Ankathete', lw=5, mec='b', mew=2, ms=10)
+        self.ax.plot(x_hypotenuse2, y_hypotenuse2, 'o-r', alpha=0.7, label = 'Hypotenuse', lw=5, mec='b', mew=2, ms=10)
 
     def sinus_animation(self):
         self.sinus_graph, = self.ax.plot([], [])

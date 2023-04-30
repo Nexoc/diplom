@@ -341,6 +341,12 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.rechtwinkliges_dreieck_button.setObjectName("rechtwinkliges Dreieck")
         self.horizontalLayout_buttons.addWidget(self.rechtwinkliges_dreieck_button)
 
+        # Erlärung
+        self.explain_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.explain_button.setObjectName("explain")        
+        self.horizontalLayout_buttons.addWidget(self.explain_button)
+
+
         # sin button 
         self.sinus_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.sinus_button.setObjectName("sinus_button")        
@@ -350,12 +356,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.animation_sinus_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.animation_sinus_button.setObjectName("Animation Sinus")
         self.horizontalLayout_buttons.addWidget(self.animation_sinus_button)
-
-        # Erlärung
-        self.explain_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.explain_button.setObjectName("sinus_button")        
-        self.horizontalLayout_buttons.addWidget(self.explain_button)
-
 
         #######################################################################################
          #                                  Widget for Content                              #
@@ -522,63 +522,73 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.pushButton_3.setText(self._translate("MainWindow", "projekt3"))
         self.pushButton_4.setText(self._translate("MainWindow", "projekt4"))
         self.btn_back.setText(self._translate("MainWindow", "back"))
-        self.label.setText(self._translate("MainWindow", "Sinus Cosinus Tangens title"))
-        self.sinus_button.setText(self._translate("MainWindow", "Sinus"))
+        self.label.setText(self._translate("MainWindow", "Sinus Cosinus title"))
+        self.sinus_button.setText(self._translate("MainWindow", "Sinus und Cosinus"))
         self.rechtwinkliges_dreieck_button.setText(self._translate("MainWindow", "Rechtwinkliges Dreieck"))
         self.animation_sinus_button.setText(self._translate("MainWindow", "Animation Sinus"))
         self.explain_button.setText(self._translate("MainWindow", "Erklärung"))
 
     def explain(self):
-        print('explain')
         self.mouse_click_text = "der Erklärseite" 
+        self.remove_canvas() 
+        self.frame_content = 4  
         # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "Erlärung"))
         self.label.setText(self._translate("MainWindow", "Erklärung"))
         # text Feld width 200
-        self.text.setFixedWidth(950)   
+        self.text.setFixedWidth(610)   
         self.text.setFixedHeight(380) 
-
-        # remove old
-        self.remove_canvas()     
-        self.frame_content = 4     
       
-        self.text_content = text.first_word
-        self.text.clear()
-        self.text.append(self.text_content)
-
         # sinus erklärung
         self.sinus_expain_button = QtWidgets.QPushButton()
         self.sinus_expain_button.setObjectName("Sinus Erklärung")
         self.sinus_expain_button.setText(self._translate("MainWindow", "Sinus Erklärung"))        
-        self.horizontalLayout_main.addWidget(self.sinus_expain_button, 0, 4, 1, 1)
+        self.horizontalLayout_main.addWidget(self.sinus_expain_button, 1, 2, 1, 1)
         self.sinus_expain_button.clicked.connect(self.sinus_explain)
 
         # cosinus erklärung
         self.cosinus_expain_button = QtWidgets.QPushButton()
         self.cosinus_expain_button.setObjectName("Cosinus Erklärung")
         self.cosinus_expain_button.setText(self._translate("MainWindow", "Cosinus Erklärung"))        
-        self.horizontalLayout_main.addWidget(self.cosinus_expain_button, 1, 4, 1, 1)
+        self.horizontalLayout_main.addWidget(self.cosinus_expain_button, 2, 2, 1, 1)
         self.cosinus_expain_button.clicked.connect(self.cosinus_explain)
 
-    def sinus_explain(self):
-        self.text_content = """ sinus erklärung """
+        # Tangens erklärung
+        self.tan_expain_button = QtWidgets.QPushButton()
+        self.tan_expain_button.setObjectName("Tangente Erklärung")
+        self.tan_expain_button.setText(self._translate("MainWindow", "Tangente Erklärung"))        
+        self.horizontalLayout_main.addWidget(self.tan_expain_button, 3, 2, 1, 1)
+        self.tan_expain_button.clicked.connect(self.tan_explain)
+
+        # The initialization of the new canvas
+        self.canvas.triangle2()
+        # add the new canvas
+        # addWidget(*Widget, row, column, rowspan, colspan)
+        self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas2, 0, 2, 1, 1)
+
         self.text.clear()
-        self.text.append(self.text_content)
+        self.text.append(text.explain)
+
+    def sinus_explain(self):
+        self.text.clear()
+        self.text.append(text.sinus_explain)
 
     def cosinus_explain(self):
-        self.text_content = """ cosinus erklärung """
         self.text.clear()
-        self.text.append(self.text_content)
+        self.text.append(text.cosinus_explain)
+
+    def tan_explain(self):
+        self.text.clear()
+        self.text.append(text.tan_explain)
 
     def sinus(self):
         '''
         description
         '''
-        print('sinus button') 
-        self.mouse_click_text = "der Sinus Erklärseite"
+        self.mouse_click_text = "Animierte Erklärseite"
         # Set the window title and the main label
-        self.setWindowTitle(self._translate("MainWindow", "Sinus"))
-        self.label.setText(self._translate("MainWindow", "Sinus"))
+        self.setWindowTitle(self._translate("MainWindow", "Sinus und Cosinus"))
+        self.label.setText(self._translate("MainWindow", "Sinus und Cosinus"))
         self.text.setFixedWidth(500)  
         self.text.setFixedHeight(380) 
 
@@ -797,7 +807,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.degrie = int(self.text_content) # with validator is always int. No need to proof it.
         self.counting()
         self.text_content = f"<div style='font-size: 26px'>\
-                    <div style='text-align: right; margin-bottom: 30px;'>Sie haben {self.text_content}° gegeben.</div>\
+                    <div style='text-align: right; margin-bottom: 30px;'>Sie haben {self.text_content}° angegeben.</div>\
                     <div style='text-align: right; color:green; margin-bottom: 30px;'>Sinus bzw Gegenkathete von {self.degrie}° <br>= sin({self.degrie}) * radius <br>= {round(self.ankathete, 2)}</div>\
                     <div style='text-align: right; color:blue; margin-bottom: 30px;'>Cosinus bzw Ankathete von {self.degrie}° <br>= cos({self.degrie}) * radius <br>= {round(self.gegenkathete, 2)}</div>\
                     <div style='text-align: right; color:red; margin-bottom: 30px;'>Die Hypotenuse ist der Radius = 1 </div>\
@@ -843,15 +853,26 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         # remove buttons from explain field
         elif self.frame_content == 4:
-            # Button sinus_expain will be removed
+            
+            # remove Button sinus_expain 
             self.horizontalLayout_main.removeWidget(self.sinus_expain_button)
             self.sinus_expain_button.deleteLater()
             self.sinus_expain_button = None
 
-            # Button cosinus_expain will be removed
+            # remove button cosinus_expain
             self.horizontalLayout_main.removeWidget(self.cosinus_expain_button)
             self.cosinus_expain_button.deleteLater()
             self.cosinus_expain_button = None
+
+            # remove button tan_explain
+            self.horizontalLayout_main.removeWidget(self.tan_expain_button)
+            self.tan_expain_button.deleteLater()
+            self.tan_expain_button = None
+
+            # remove canvas triangle
+            self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas2)
+            self.canvas.triangle_canvas2.deleteLater()
+            self.canvas.triangle_canvas2 = None
             
     def menu(self):
         '''
