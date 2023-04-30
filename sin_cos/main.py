@@ -1,7 +1,5 @@
 
 import sys
-import time
-import random
 from os import path
 import math 
 
@@ -9,16 +7,15 @@ import numpy as np
 
 from matplotlib.backends.qt_compat import QtWidgets
 import matplotlib.pyplot as plt
-from matplotlib_sin import CircleAnimation, SinusAnimation
 import matplotlib.ticker as ticker
 import matplotlib.patches as plt_arc
 
-from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QMetaObject, QPropertyAnimation, QTimer
+from PyQt5.QtCore import Qt, QSize, QRect, QCoreApplication, QCoreApplication, QPropertyAnimation, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QIntValidator
 from PyQt5.QtWidgets import QTextBrowser, QLineEdit, QLabel
 
-import sin_matplotlib as main_animation
 from canvas import Canvas, MplCanvas
+from matplotlib_sin import CircleAnimation, SinusAnimation
 
 
 # http://schulphysikwiki.de/index.php/Animation:_Sinus_und_Cosinus_im_Einheitskreis
@@ -48,9 +45,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.qt5_init()
  
         # buttons in physic project
+        self.rechtwinkliges_dreieck_button.clicked.connect(self.rechtwinkliges_dreieck)
         self.sinus_button.clicked.connect(self.sinus)
-        self.cosinus_button.clicked.connect(self.cosinus)
-        self.folmeln_samlung_button.clicked.connect(self.folmeln_samlung)
+        self.animation_sinus_button.clicked.connect(self.animation_sinus)
         self.explain_button.clicked.connect(self.explain)
 
         # An animated button of the menu
@@ -339,21 +336,23 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #######################################################################################
          #                       Buttons init and add                                        # 
         ####################################################################################### 
+
+        # rechtwinkliges Dreieck
+        self.rechtwinkliges_dreieck_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.rechtwinkliges_dreieck_button.setObjectName("rechtwinkliges Dreieck")
+        self.horizontalLayout_buttons.addWidget(self.rechtwinkliges_dreieck_button)
+
         # sin button 
         self.sinus_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.sinus_button.setObjectName("sinus_button")        
         self.horizontalLayout_buttons.addWidget(self.sinus_button)
 
-        # cos button
-        self.cosinus_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.cosinus_button.setObjectName("cosinus_button")
-        self.horizontalLayout_buttons.addWidget(self.cosinus_button)
+        # fAnimation Sinus
+        self.animation_sinus_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
+        self.animation_sinus_button.setObjectName("Animation Sinus")
+        self.horizontalLayout_buttons.addWidget(self.animation_sinus_button)
 
-        # folmeln_samlung button
-        self.folmeln_samlung_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.folmeln_samlung_button.setObjectName("folmeln_samlung_button")
-        self.horizontalLayout_buttons.addWidget(self.folmeln_samlung_button)
-
+        # Erlärung
         self.explain_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.explain_button.setObjectName("sinus_button")        
         self.horizontalLayout_buttons.addWidget(self.explain_button)
@@ -470,13 +469,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         context.addAction(sin)
         # The initialization of the cosinus button
         cos = QtWidgets.QAction("cosinus", self)
-        cos.triggered.connect(self.cosinus)
+        cos.triggered.connect(self.rechtwinkliges_dreieck)
         # maybe for the future
         # cos.triggered.connect(lambda: label.setText("cosinus button triggered"))
         context.addAction(cos)
         # The initialization of the folmeln button
         formeln = QtWidgets.QAction("formeln", self)
-        formeln.triggered.connect(self.folmeln_samlung)
+        formeln.triggered.connect(self.animation_sinus)
         context.addAction(formeln)
 
         context.exec(self.mapToGlobal(pos))
@@ -546,13 +545,54 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.btn_back.setText(self._translate("MainWindow", "back"))
         self.label.setText(self._translate("MainWindow", "Sinus Cosinus Tangens title"))
         self.sinus_button.setText(self._translate("MainWindow", "Sinus"))
-        self.cosinus_button.setText(self._translate("MainWindow", "Cosinus"))
-        self.folmeln_samlung_button.setText(self._translate("MainWindow", "Formeln Samlung"))
+        self.rechtwinkliges_dreieck_button.setText(self._translate("MainWindow", "Rechtwinkliges Dreieck"))
+        self.animation_sinus_button.setText(self._translate("MainWindow", "Animation Sinus"))
         self.explain_button.setText(self._translate("MainWindow", "Erklärung"))
 
 
     def explain(self):
         print('explain')
+
+        # Set the window title and the main label
+        self.setWindowTitle(self._translate("MainWindow", "Erlärung"))
+        self.label.setText(self._translate("MainWindow", "Erklärung"))
+        # text Feld width 200
+        self.text.setFixedWidth(950)   
+        self.text.setFixedHeight(380) 
+
+        # remove old
+        self.remove_canvas()     
+        self.frame_content = 4     
+      
+        self.text_content = """ Allgemein Erklägung """
+        self.text.clear()
+        self.text.append(self.text_content)
+
+        # sinus erklärung
+        self.sinus_expain_button = QtWidgets.QPushButton()
+        self.sinus_expain_button.setObjectName("Sinus Erklärung")
+        self.sinus_expain_button.setText(self._translate("MainWindow", "Sinus Erklärung"))        
+        self.horizontalLayout_main.addWidget(self.sinus_expain_button, 0, 4, 1, 1)
+        self.sinus_expain_button.clicked.connect(self.sinus_explain)
+
+        # cosinus erklärung
+        self.cosinus_expain_button = QtWidgets.QPushButton()
+        self.cosinus_expain_button.setObjectName("Cosinus Erklärung")
+        self.cosinus_expain_button.setText(self._translate("MainWindow", "Cosinus Erklärung"))        
+        self.horizontalLayout_main.addWidget(self.cosinus_expain_button, 1, 4, 1, 1)
+        self.cosinus_expain_button.clicked.connect(self.cosinus_explain)
+
+    def sinus_explain(self):
+        self.text_content = """ sinus erklärung """
+        self.text.clear()
+        self.text.append(self.text_content)
+
+    def cosinus_explain(self):
+        self.text_content = """ cosinus erklärung """
+        self.text.clear()
+        self.text.append(self.text_content)
+
+
     def sinus(self):
         '''
         description
@@ -562,6 +602,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.setWindowTitle(self._translate("MainWindow", "Sinus"))
         self.label.setText(self._translate("MainWindow", "Sinus"))
         self.text.setFixedWidth(500)  
+        self.text.setFixedHeight(380) 
 
 
         #########################################################################################
@@ -620,15 +661,16 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # change the frame_content into "1"
         self.frame_content = 1
 
-    def cosinus(self):
+    def rechtwinkliges_dreieck(self):
         '''
         Set the window title and the main label
         Run Matplotlib Canvas
         '''
-        print('cosinus button')
-        self.setWindowTitle(self._translate("MainWindow", "Cosinus"))
-        self.label.setText(self._translate("MainWindow", "Cosinus"))
+        print('rechtwinkliges Dreieck')
+        self.setWindowTitle(self._translate("MainWindow", "rechtwinkliges Dreieck"))
+        self.label.setText(self._translate("MainWindow", "rechtwinkliges Dreieck"))
         self.text.setFixedWidth(550)  
+        self.text.setFixedHeight(380) 
         # check if we are one the same Canvas
         if self.frame_content != 2:
             # The initialization of the new canvas
@@ -658,16 +700,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # The initialization or changing of variable into "2"
         self.frame_content = 2
 
-    def folmeln_samlung(self):
+    def animation_sinus(self):
         '''
         description
         '''
-        print('sinus button') 
+        print('Animation') 
         # Set the window title and the main label
-        self.setWindowTitle(self._translate("MainWindow", "animation"))
-        self.label.setText(self._translate("MainWindow", "SAnimation"))
+        self.setWindowTitle(self._translate("MainWindow", "Animation Sinus"))
+        self.label.setText(self._translate("MainWindow", "Animation"))
         # text Feld width 200
-        self.text.setFixedWidth(200)   
+        self.text.setFixedWidth(2)   
+        self.text.setFixedHeight(1) 
         #########################################################################################
          #                                Canvas(matplotlib)                                   #
         ######################################################################################### 
@@ -693,7 +736,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         
         self.frame_content = 3
      
-
     def update_canvas(self):
         # Drop off the first y element, append a new one.
         if len(self.xdata) == 1:
@@ -789,7 +831,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()
 
-
     def update_text(self):
         self.text_content = self.grad.text()
         self.text.clear()
@@ -818,7 +859,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.gegenkathete = math.cos(math.radians(self.degrie))
          
     def remove_canvas(self):
-        # remove dynamic_canvas and input field
+        """
+        it will be removed, wenn we change fields
+        """
+        # It removes dynamic_canvas and input from Sinus field
         if self.frame_content == 1:
             self.horizontalLayout_main.removeWidget(self.canvas.dynamic_canvas)
             self.canvas.dynamic_canvas.deleteLater()
@@ -832,17 +876,30 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.label_grad.deleteLater()
             self.label_grad = None
 
-        # remove triangle_canvas
+        # remove triangle_canvas from rechtwinkligen Dreieck field
         elif self.frame_content == 2:            
             self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas)
             self.canvas.triangle_canvas.deleteLater()
             self.canvas.triangle_canvas = None
 
-            # remove animation_m
+        # remove animation_m from Sinus Animation field
         elif self.frame_content == 3:
             self.horizontalLayout_main.removeWidget(self.animation_m)
             self.animation_m.deleteLater()
             self.animation_m = None 
+
+        # remove buttons from explain field
+        elif self.frame_content == 4:
+            # Button sinus_expain will be removed
+            self.horizontalLayout_main.removeWidget(self.sinus_expain_button)
+            self.sinus_expain_button.deleteLater()
+            self.sinus_expain_button = None
+
+            # Button cosinus_expain will be removed
+            self.horizontalLayout_main.removeWidget(self.cosinus_expain_button)
+            self.cosinus_expain_button.deleteLater()
+            self.cosinus_expain_button = None
+            
 
     def menu(self):
         '''
