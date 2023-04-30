@@ -15,10 +15,10 @@ from PyQt5.QtGui import QFont, QIcon, QPixmap, QIntValidator
 from PyQt5.QtWidgets import QTextBrowser, QLineEdit, QLabel
 
 from canvas import Canvas, MplCanvas
-from matplotlib_sin import CircleAnimation, SinusAnimation
-
+import text
 
 # http://schulphysikwiki.de/index.php/Animation:_Sinus_und_Cosinus_im_Einheitskreis
+
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -29,10 +29,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         self.frame_content = 0 # where we are now
         super().__init__(*args, **kwargs)
-        self.text_content = '<div>sin(a) = Gegenkathete durch Hypotenuse<div/><div>cos(a) = Ankathete durch Hypotenuse<div/>'
+        self.text_content = text.first_word
         self.ankathete = None
         self.gegenkathete = None
         self.degrie = None
+        self.mouse_click_text = "Sie befinden sich auf der Sinus-Cosinus Erklärseite"
 
         #######################################################################################
          #                              matplotlib initialization                            # 
@@ -252,7 +253,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
 
-
         #######################################################################################
          #                   The initialization of one animated button for the menu          # 
         ####################################################################################### 
@@ -287,7 +287,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # add label to horizontalLayout 4
         self.horizontalLayout_4.addWidget(self.label)
 
-        ############################################
         self.label_right = QtWidgets.QLabel(self.top_frame)
         font = QFont()
         font.setPointSize(24)
@@ -347,7 +346,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.sinus_button.setObjectName("sinus_button")        
         self.horizontalLayout_buttons.addWidget(self.sinus_button)
 
-        # fAnimation Sinus
+        # Animation Sinus
         self.animation_sinus_button = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.animation_sinus_button.setObjectName("Animation Sinus")
         self.horizontalLayout_buttons.addWidget(self.animation_sinus_button)
@@ -362,7 +361,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
          #                                  Widget for Content                              #
         #######################################################################################
         self.horizontalWidget_content = QtWidgets.QWidget(self.frame_main)
-        # geometry of main content
+
+
+        #     +++++++++++++++++++++  geometry of main content   ++++++++++++++++++++++++++  #
         top, left, width, height = 50, 50, 1100, 380
         self.horizontalWidget_content.setGeometry(QRect(top, left, width, height))
         self.horizontalWidget_content.setObjectName("horizontalWidget_content")
@@ -370,10 +371,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         #######################################################################################
          #                       Horizontal Box layout for main content                      # 
         ####################################################################################### 
-        # QGridLayout QHBoxLayout
-        # // addWidget(*Widget, row, column, rowspan, colspan)
-        # // 0th row
-        # gridLayout->addWidget(b1,0,0,1,1);
+
         self.horizontalLayout_main = QtWidgets.QGridLayout(self.horizontalWidget_content)
         self.horizontalLayout_main.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_main.setObjectName("horizontalLayout_main")
@@ -420,31 +418,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text.setOpenExternalLinks(True)
         # addWidget(*Widget, row, column, rowspan, colspan)
         self.horizontalLayout_main.addWidget(self.text, 0, 0, 4, 2)
-        self.text_content = """ 
-            <div>
-                <b style='color:blue'>Sinus</b> und <b style='color:blue'>Cosinus</b> sind zwei mathematische Funktionen, 
-                die häufig in der Trigonometrie verwendet werden, einem Zweig der Mathematik, 
-                der sich mit den Beziehungen zwischen den Seiten und Winkeln von Dreiecken befasst.
-                <br><br>
-                Die Sinusfunktion (sin) bezieht sich auf das Verhältnis 
-                der Länge der Seite gegenüber einem Winkel in einem rechtwinkligen Dreieck zur Länge der Hypotenuse (der längsten Seite) des Dreiecks. 
-                <br>
-                Mit anderen Worten, <b style='color:blue'>sin(α) = Gegenkathete(gegenüberliegende Seite) / Hypotenuse.</b>
-                <br><br>
-                Die Kosinusfunktion (cos) bezieht sich auf das Verhältnis 
-                der Länge der anliegenden Seite (der Seite, die an den Winkel angrenzt) zur Hypotenuse des Dreiecks. 
-                <br>Mit anderen Worten, <b style='color:blue'>cos(α) = Ankathete(anliegende Seite) / Hypotenuse.</b>
-                <br><br>
-                Diese Funktionen sind in einer Vielzahl von Bereichen 
-                wie Ingenieurwissenschaften, Physik und Navigation nützlich. 
-                <br>
-                Sie können verwendet werden, um die Länge einer Seite oder das Maß eines Winkels in einem Dreieck zu bestimmen, 
-                sowie um periodische Phänomene wie Wellen und Vibrationen zu modellieren.
-            </div>
-            """
-        self.text.setFixedWidth(600)       
+        self.text_content = text.first_word
+        self.text.setFixedWidth(1100)       
         self.text.append(self.text_content)
-
 
         self.canvas.graph()
 
@@ -464,53 +440,56 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         context = QtWidgets.QMenu(self)
 
         # The initialization of the sinus button
-        sin = QtWidgets.QAction("sinus", self)
+        sin = QtWidgets.QAction("Sinus", self)
         sin.triggered.connect(self.sinus)
         context.addAction(sin)
         # The initialization of the cosinus button
-        cos = QtWidgets.QAction("cosinus", self)
+        cos = QtWidgets.QAction("Rechtwinkliges Dreieck", self)
         cos.triggered.connect(self.rechtwinkliges_dreieck)
         # maybe for the future
         # cos.triggered.connect(lambda: label.setText("cosinus button triggered"))
         context.addAction(cos)
         # The initialization of the folmeln button
-        formeln = QtWidgets.QAction("formeln", self)
+        formeln = QtWidgets.QAction("Animation Sinus", self)
         formeln.triggered.connect(self.animation_sinus)
         context.addAction(formeln)
+
+        explain = QtWidgets.QAction("Erklärungen", self)
+        explain.triggered.connect(self.explain)
+        context.addAction(explain)
 
         context.exec(self.mapToGlobal(pos))
 
     def mousePressEvent(self, e):
 
         if e.button() == Qt.LeftButton:
-            # handle the left-button press in here
-            self.label_right.setText(" -> mouse Press Event LEFT")
+            # handle the left-button press in here            
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
             x_position = e.x()
             y_position = e.y()
             position = e.pos()
             print(f" -> mouse Press Event LEFT and {x_position=}, {y_position=} --- {position=}")
 
-
         elif e.button() == Qt.MiddleButton:
             # handle the middle-button press in here.
-            self.label_right.setText(" -> mousePressEvent MIDDLE")
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
             print(" -> mousePressEvent MIDDLE")
 
         elif e.button() == Qt.RightButton:
             # handle the right-button press in here.
-            self.label_right.setText(" -> mousePressEvent RIGHT")
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
             print(" -> mousePressEvent RIGHT")
 
     def mouseReleaseEvent(self, e):
         
         if e.button() == Qt.LeftButton:
-            self.label_right.setText(" -> mouseReleaseEvent LEFT")
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
 
         elif e.button() == Qt.MiddleButton:
-            self.label_right.setText(" -> mouseReleaseEvent MIDDLE")
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
 
         elif e.button() == Qt.RightButton:
-            self.label_right.setText(" -> mouseReleaseEvent RIGHT")
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
 
         x_position = e.x()
         y_position = e.y()
@@ -518,15 +497,15 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def mouseDoubleClickEvent(self, e):
         if e.button() == Qt.LeftButton:
-            self.label_right.setText(" -> mouseDoubleClickEvent LEFT")
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
             print(" -> mouseDoubleClickEvent LEFT")
 
         elif e.button() == Qt.MiddleButton:
-            self.label_right.setText(" -> mouseDoubleClickEvent MIDDLE")
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
             print(" -> mouseDoubleClickEvent MIDDLE")
 
         elif e.button() == Qt.RightButton:
-            self.label_right.setText(" -> mouseDoubleClickEvent RIGHT")
+            self.label_right.setText(f". Sie befinden sich auf {self.mouse_click_text}")
             print(" -> mouseDoubleClickEvent RIGHT")
 
     def retranslateUi(self):
@@ -549,10 +528,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.animation_sinus_button.setText(self._translate("MainWindow", "Animation Sinus"))
         self.explain_button.setText(self._translate("MainWindow", "Erklärung"))
 
-
     def explain(self):
         print('explain')
-
+        self.mouse_click_text = "der Erklärseite" 
         # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "Erlärung"))
         self.label.setText(self._translate("MainWindow", "Erklärung"))
@@ -564,7 +542,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.remove_canvas()     
         self.frame_content = 4     
       
-        self.text_content = """ Allgemein Erklägung """
+        self.text_content = text.first_word
         self.text.clear()
         self.text.append(self.text_content)
 
@@ -592,18 +570,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text.clear()
         self.text.append(self.text_content)
 
-
     def sinus(self):
         '''
         description
         '''
         print('sinus button') 
+        self.mouse_click_text = "der Sinus Erklärseite"
         # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "Sinus"))
         self.label.setText(self._translate("MainWindow", "Sinus"))
         self.text.setFixedWidth(500)  
         self.text.setFixedHeight(380) 
-
 
         #########################################################################################
          #                                Canvas(matplotlib)                                   #
@@ -614,17 +591,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         
         # init new
         if self.ankathete == None:
-            self.text_content = """
-                    Der Sinus ist eine trigonometrische Funktion, die sich auf das Verhältnis der Länge der Seite gegenüber einem Winkel in einem rechtwinkligen Dreieck zur Länge der Hypotenuse (der längsten Seite) des Dreiecks bezieht. Mit anderen Worten, der Sinus eines Winkels theta ist das Verhältnis der Länge der gegenüberliegenden Seite zu der Länge der Hypotenuse.
-
-                    Die Sinusfunktion wird oft als sin abgekürzt und ist eine periodische Funktion mit einer Periode von 2π (radian). Das bedeutet, dass der Sinus einer bestimmten Winkelgröße in einem rechtwinkligen Dreieck gleich ist wie der Sinus des gleichen Winkels, der um 360 Grad (oder 2π) erhöht oder verringert ist.
-
-                    Der Sinus ist in vielen Bereichen der Mathematik und Wissenschaften nützlich. Zum Beispiel kann er verwendet werden, um die Höhe eines Objekts zu berechnen, wenn die Entfernung und der Winkel zur Spitze des Objekts bekannt sind. Er kann auch verwendet werden, um die Auslenkung eines schwingenden Objekts zu modellieren, wie zum Beispiel bei einem Pendel.
-
-                    Es gibt auch eine Reihe von Identitäten und Formeln, die den Sinus betreffen. Eine bekannte Identität ist die Sinus-Addition-Formel, die das Verhältnis von Sinus und Cosinus für die Summe oder Differenz von zwei Winkeln beschreibt. Eine andere wichtige Formel ist die Sinus-Regel, die das Verhältnis von Seiten und Winkeln in einem allgemeinen Dreieck beschreibt.
-
-                    Insgesamt ist der Sinus eine wichtige Funktion in der Mathematik und den Wissenschaften, die in vielen Anwendungen verwendet wird.
-                    """
+            self.text_content = text.sinus                
             self.text.append(self.text_content)
             self.canvas.graph(x_hypotenuse=[0, .7], y_hypotenuse=[0, .7], x_gegenkathete=[.7, .7], y_gegenkathete=[.7, 0], x_ankathete=[0, .7], y_ankathete=[0, 0])
         else:
@@ -667,6 +634,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Run Matplotlib Canvas
         '''
         print('rechtwinkliges Dreieck')
+        self.mouse_click_text = "der rechtwinkligen Dreieck Erklärseite"   
         self.setWindowTitle(self._translate("MainWindow", "rechtwinkliges Dreieck"))
         self.label.setText(self._translate("MainWindow", "rechtwinkliges Dreieck"))
         self.text.setFixedWidth(550)  
@@ -680,22 +648,9 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             # add the new canvas
             # addWidget(*Widget, row, column, rowspan, colspan)
             self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas, 0, 1, 1, 1)
-            
-            cos_text = """
-            In einem rechtwinkligen Dreieck gibt es drei Seiten: die Hypotenuse, die Ankathete und die Gegenkathete.
-
-            Die Hypotenuse ist die längste Seite des Dreiecks und liegt gegenüber vom rechten Winkel. Sie wird oft mit dem Buchstaben c bezeichnet.
-
-            Die Ankathete ist die Seite, die den Winkel enthält, auf den sich die Frage bezieht. Sie wird oft mit dem Buchstaben a bezeichnet.
-
-            Die Gegenkathete ist die Seite, die dem Winkel gegenüberliegt. Sie wird oft mit dem Buchstaben b bezeichnet.
-
-            Die Beziehungen zwischen diesen Seiten und Winkeln können mit den trigonometrischen Funktionen Sinus, Cosinus und Tangens beschrieben werden. Der Sinus eines Winkels ist das Verhältnis der Länge der Gegenkathete zur Länge der Hypotenuse, der Cosinus eines Winkels ist das Verhältnis der Länge der Ankathete zur Länge der Hypotenuse und der Tangens eines Winkels ist das Verhältnis der Länge der Gegenkathete zur Länge der Ankathete.
-
-            Zusammen bilden die Hypotenuse, die Ankathete und die Gegenkathete ein wichtiges Konzept in der Trigonometrie und sind in vielen Anwendungen nützlich, wie zum Beispiel in der Geometrie, der Physik und der Navigation.
-            """
+ 
             self.text.clear()
-            self.text.append(cos_text)
+            self.text.append(text.rechtwinkliges_dreieck)
 
         # The initialization or changing of variable into "2"
         self.frame_content = 2
@@ -704,7 +659,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         '''
         description
         '''
-        print('Animation') 
+        print('Animation')
+        self.mouse_click_text = "der Sinus Animationsseite"  
         # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "Animation Sinus"))
         self.label.setText(self._translate("MainWindow", "Animation"))
@@ -835,21 +791,18 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text_content = self.grad.text()
         self.text.clear()
 
-        #print(type(text)) # str
         if self.text_content == '':
             self.degrie = 0
         else:
-            self.degrie = int(self.text_content) # with validator is always int max from 0 to 999
+            self.degrie = int(self.text_content) # with validator is always int. No need to proof it.
         self.counting()
-        self.text_content = f"<div style='text-align: right;'>Sie haben {self.text_content}° gegeben.</div>\
-                         <div style='text-align: right;'>Sinus von {self.degrie}° ist {round(self.ankathete, 2)}</div>\
-                         <div style='text-align: right;'>Cosinus von {self.degrie}° ist {round(self.gegenkathete, 2)}</div>\
-                         <div style='text-align: right; color:red'>Hypotenuse ist Radiud = 1 </div>\
-                        <div style='text-align: right; color:blue'>Ankathete = sin({self.degrie}) * radius</div>\
-                         <div style='text-align: right; color:green'>Gegenkathete = cos({self.degrie}) * radius</div>\
-                         <div style='text-align: right;'>Ankathete ist {round(self.ankathete, 2)}</div>\
-                         <div style='text-align: right;'>Gegenkathete ist {round(self.gegenkathete, 2)}</div>\
-                            "
+        self.text_content = f"<div style='font-size: 26px'>\
+                    <div style='text-align: right; margin-bottom: 30px;'>Sie haben {self.text_content}° gegeben.</div>\
+                    <div style='text-align: right; color:green; margin-bottom: 30px;'>Sinus bzw Gegenkathete von {self.degrie}° <br>= sin({self.degrie}) * radius <br>= {round(self.ankathete, 2)}</div>\
+                    <div style='text-align: right; color:blue; margin-bottom: 30px;'>Cosinus bzw Ankathete von {self.degrie}° <br>= cos({self.degrie}) * radius <br>= {round(self.gegenkathete, 2)}</div>\
+                    <div style='text-align: right; color:red; margin-bottom: 30px;'>Die Hypotenuse ist der Radius = 1 </div>\
+                            </div>"
+
         self.text.append(self.text_content)
         if self.frame_content == 1:
             self.sinus()
@@ -877,7 +830,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.label_grad = None
 
         # remove triangle_canvas from rechtwinkligen Dreieck field
-        elif self.frame_content == 2:            
+        elif self.frame_content == 2:         
             self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas)
             self.canvas.triangle_canvas.deleteLater()
             self.canvas.triangle_canvas = None
@@ -900,7 +853,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.cosinus_expain_button.deleteLater()
             self.cosinus_expain_button = None
             
-
     def menu(self):
         '''
         description
@@ -967,4 +919,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
