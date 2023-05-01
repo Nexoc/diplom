@@ -535,7 +535,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "Erlärung"))
         self.label.setText(self._translate("MainWindow", "Erklärung"))
-        # text Feld width 200
+        # text Feld size
         self.text.setFixedWidth(610)   
         self.text.setFixedHeight(380) 
       
@@ -555,31 +555,64 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         # Tangens erklärung
         self.tan_expain_button = QtWidgets.QPushButton()
-        self.tan_expain_button.setObjectName("Tangente Erklärung")
-        self.tan_expain_button.setText(self._translate("MainWindow", "Tangente Erklärung"))        
+        self.tan_expain_button.setObjectName("Tangens Erklärung")
+        self.tan_expain_button.setText(self._translate("MainWindow", "Tangens Erklärung"))        
         self.horizontalLayout_main.addWidget(self.tan_expain_button, 3, 2, 1, 1)
         self.tan_expain_button.clicked.connect(self.tan_explain)
 
         # The initialization of the new canvas
-        self.canvas.triangle2()
-        # add the new canvas
+        self.canvas.triangle_explain_main()
         # addWidget(*Widget, row, column, rowspan, colspan)
-        self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas2, 0, 2, 1, 1)
+        self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas_explain_main, 0, 2, 1, 1)
 
         self.text.clear()
         self.text.append(text.explain)
+        self.canvas.triangle_canvas_explain_sinus = None
+        self.canvas.triangle_canvas_explain_cosinus = None
+        self.canvas.triangle_canvas_explain_tan = None
 
     def sinus_explain(self):
         self.text.clear()
         self.text.append(text.sinus_explain)
+        self.remove_explain_canvases()
+        self.canvas.triangle_explain_sinus()
+        self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas_explain_sinus, 0, 2, 1, 1)
 
     def cosinus_explain(self):
         self.text.clear()
         self.text.append(text.cosinus_explain)
+        self.remove_explain_canvases()
+        self.canvas.triangle_explain_cosinus()
+        self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas_explain_cosinus, 0, 2, 1, 1)
 
     def tan_explain(self):
         self.text.clear()
         self.text.append(text.tan_explain)
+        self.remove_explain_canvases()
+        self.canvas.triangle_explain_tan()
+        self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas_explain_tan, 0, 2, 1, 1)
+
+    def remove_explain_canvases(self):
+
+            if self.canvas.triangle_canvas_explain_main != None:
+                self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas_explain_main)
+                self.canvas.triangle_canvas_explain_main.deleteLater()
+                self.canvas.triangle_canvas_explain_main = None
+            
+            if self.canvas.triangle_canvas_explain_sinus != None:
+                self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas_explain_sinus)
+                self.canvas.triangle_canvas_explain_sinus.deleteLater()
+                self.canvas.triangle_canvas_explain_sinus = None
+
+            if self.canvas.triangle_canvas_explain_cosinus != None:
+                self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas_explain_cosinus)
+                self.canvas.triangle_canvas_explain_cosinus.deleteLater()
+                self.canvas.triangle_canvas_explain_cosinus = None
+
+            if self.canvas.triangle_canvas_explain_tan != None:
+                self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas_explain_tan)
+                self.canvas.triangle_canvas_explain_tan.deleteLater()
+                self.canvas.triangle_canvas_explain_tan = None
 
     def sinus(self):
         '''
@@ -629,7 +662,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.label_grad.setFont(QFont("Arial",20))
         self.label_grad.setAlignment(Qt.AlignRight)
         self.label_grad.setBuddy(self.grad)
-        # addWidget(*Widget, row, column, rowspan, colspan)
+
         self.horizontalLayout_main.addWidget(self.label_grad, 1, 4, 1, 1)
 
         self.grad.returnPressed.connect(self.update_text)  
@@ -643,7 +676,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         Set the window title and the main label
         Run Matplotlib Canvas
         '''
-        print('rechtwinkliges Dreieck')
         self.mouse_click_text = "der rechtwinkligen Dreieck Erklärseite"   
         self.setWindowTitle(self._translate("MainWindow", "rechtwinkliges Dreieck"))
         self.label.setText(self._translate("MainWindow", "rechtwinkliges Dreieck"))
@@ -651,10 +683,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.text.setFixedHeight(380) 
         # check if we are one the same Canvas
         if self.frame_content != 2:
-            # The initialization of the new canvas
-            self.canvas.triangle()
             # delete the old canvas
             self.remove_canvas() 
+            # The initialization of the new canvas
+            self.canvas.triangle()
             # add the new canvas
             # addWidget(*Widget, row, column, rowspan, colspan)
             self.horizontalLayout_main.addWidget(self.canvas.triangle_canvas, 0, 1, 1, 1)
@@ -669,7 +701,6 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         '''
         description
         '''
-        print('Animation')
         self.mouse_click_text = "der Sinus Animationsseite"  
         # Set the window title and the main label
         self.setWindowTitle(self._translate("MainWindow", "Animation Sinus"))
@@ -711,9 +742,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
         if self.animation_m != None:
             
-            # first plot
             self.animation_m.axes.cla()  # Clear the canvas.
-            # Kreis
+
             self.animation_m.axes.plot([0, np.cos(self.xdata[0])], [0, np.sin(self.xdata[0])], 'o-r', alpha=0.7, lw=5, mec='b', mew=2, ms=10)
             
             self.animation_m.axes.plot([self.xdata[0]+1, np.cos(self.xdata[0])],                                        
@@ -725,8 +755,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.animation_m.axes.set_ylim([-1, 1])
             self.animation_m.axes.set_xlim([-1, 7.3])
             self.animation_m.axes.set_title("Sinus")
-            # self.animation_m.axes.set_xlabel('X Axe')
-            # self.animation_m.axes.set_ylabel('Y Axe')
+
             circle1 = plt.Circle((0, 0), 1, color='r', fill=False, alpha=0.7)
             self.animation_m.axes.add_patch(circle1)
             self.animation_m.axes.set_aspect('equal', 'box') 
@@ -734,18 +763,22 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
             arc_draw = plt_arc.Wedge(center=0, r=1, theta1=0, theta2=self.xdata[0]*57, width=0.7, fill=True, color='orange', edgecolor="green", alpha=0.5)  
             self.animation_m.axes.add_patch(arc_draw)
-            # self.animation_m.axes.axhline(y=0, color='k')
-            # self.animation_m.axes.axvline(x=0, color='k')
             
-            #  Устанавливаем интервал основных и
-            #  вспомогательных делений:
+            # Устанавливаем интервал основных и вспомогательных делений:
+            # steps major ticks and minor ticks
             self.animation_m.axes.xaxis.set_major_locator(ticker.MultipleLocator(1))
             self.animation_m.axes.xaxis.set_minor_locator(ticker.MultipleLocator(.1))
-            self.animation_m.axes.yaxis.set_major_locator(ticker.MultipleLocator(5))
-            self.animation_m.axes.yaxis.set_minor_locator(ticker.MultipleLocator(10))
+            self.animation_m.axes.yaxis.set_major_locator(ticker.MultipleLocator(1))
+            self.animation_m.axes.yaxis.set_minor_locator(ticker.MultipleLocator(.1))
 
 
-            #  Настраиваем вид основных тиков:
+            self.animation_m.axes.set_xticks((-1, 0, 1, 2, 3, 4, 5, 6, 7))
+            self.animation_m.axes.set_xticklabels(("-1", "0", "1 / 0", "1", "2", "3", "4", "5", "6"))
+
+            self.animation_m.axes.set_yticks((-1, 0, 1))
+            self.animation_m.axes.set_yticklabels(("-1", "0", "1"))
+
+
             self.animation_m.axes.tick_params(axis = 'both',    #  Применяем параметры к обеим осям
                         which = 'major',    #  Применяем параметры к основным делениям
                         direction = 'inout',    #  Рисуем деления внутри и снаружи графика
@@ -764,9 +797,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         labelleft = True,    #  слева
                         labelright = True,    #  и справа
                         labelrotation = 45)    #  Поворот подписей
+            
 
-
-            #  Настраиваем вид вспомогательных тиков:
             self.animation_m.axes.tick_params(axis = 'both',    #  Применяем параметры к обеим осям
                         which = 'minor',    #  Применяем параметры к вспомогательным делениям
                         direction = 'out',    #  Рисуем деления внутри и снаружи графика
@@ -780,19 +812,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                         top = True,    #   сверху
                         left = True,    #  слева
                         right = True)    #  и справа
-                        
-            #  Добавляем линии основной сетки:
-            self.animation_m.axes.grid(axis='both', which='major',
-                    color = 'b')
+            
 
+            #  Добавляем линии основной сетки:
+            self.animation_m.axes.grid(axis='both', which='major', color = 'b')       
             #  Включаем видимость вспомогательных делений:
             self.animation_m.axes.minorticks_on()
-
-            #  Теперь можем отдельно задавать внешний вид
-            #  вспомогательной сетки:
-            self.animation_m.axes.grid(axis='both', which='minor',
-                    color = 'm',
-                    linestyle = ':')
+            #  Теперь можем отдельно задавать внешний вид вспомогательной сетки:
+            self.animation_m.axes.grid(axis='both', which='minor', color = 'm', linestyle = ':')            
 
             # Trigger the canvas to update and redraw.
             self.animation_m.draw()
@@ -806,11 +833,11 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         else:
             self.degrie = int(self.text_content) # with validator is always int. No need to proof it.
         self.counting()
-        self.text_content = f"<div style='font-size: 26px'>\
-                    <div style='text-align: right; margin-bottom: 30px;'>Sie haben {self.text_content}° angegeben.</div>\
-                    <div style='text-align: right; color:green; margin-bottom: 30px;'>Sinus bzw Gegenkathete von {self.degrie}° <br>= sin({self.degrie}) * radius <br>= {round(self.ankathete, 2)}</div>\
-                    <div style='text-align: right; color:blue; margin-bottom: 30px;'>Cosinus bzw Ankathete von {self.degrie}° <br>= cos({self.degrie}) * radius <br>= {round(self.gegenkathete, 2)}</div>\
-                    <div style='text-align: right; color:red; margin-bottom: 30px;'>Die Hypotenuse ist der Radius = 1 </div>\
+        self.text_content = f"<div style='font-size: 22px'>\
+                    <div style='text-align: right; margin-bottom: 20px;'>Sie haben {self.text_content}° angegeben.</div>\
+                    <div style='text-align: right; color:green; margin-bottom: 20px;'>Sinus bzw die Länge von Gegenkathete von {self.degrie}° <br>= sin({self.degrie}) x radius <br>= {round(self.ankathete, 2)}</div>\
+                    <div style='text-align: right; color:blue; margin-bottom: 20px;'>Cosinus bzw die Länge von Ankathete von {self.degrie}° <br>= cos({self.degrie}) x radius <br>= {round(self.gegenkathete, 2)}</div>\
+                    <div style='text-align: right; color:red; margin-bottom: 20px;'>Die Hypotenuse ist der Radius = 1 </div>\
                             </div>"
 
         self.text.append(self.text_content)
@@ -869,10 +896,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             self.tan_expain_button.deleteLater()
             self.tan_expain_button = None
 
-            # remove canvas triangle
-            self.horizontalLayout_main.removeWidget(self.canvas.triangle_canvas2)
-            self.canvas.triangle_canvas2.deleteLater()
-            self.canvas.triangle_canvas2 = None
+            # remove canvases
+            self.remove_explain_canvases()
             
     def menu(self):
         '''
