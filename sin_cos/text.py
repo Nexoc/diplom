@@ -5,6 +5,22 @@ first_word = """
     <head>
         <title>Sinus und Kosinus</title>
         <style>
+
+		div {
+			font-family: Arial, sans-serif;
+			background-color: #e7ebef;
+			margin: 5;
+			padding: 30;
+		}
+		h1 {
+			font-size: 22px;
+			color: #333;
+			text-align: center;
+			margin-top: 50px;
+			margin-bottom: 30px;
+		}
+
+
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f8f8f8;
@@ -69,7 +85,8 @@ rechtwinkliges_dreieck = """
 	</style>
 </head>
 <body>
-	<h1>Das rechtwinklige Dreieck</h1>
+    <h2 style="color: #ffffff; background-color: black; text-align: center;">Das rechtwinklige Dreieck</h2>
+
 <div>
 <p>
 <b>Ein rechtwinkliges Dreieck</b> ist ein Dreieck, das einen <b>rechten Winkel</b> (90°) hat. 
@@ -91,10 +108,41 @@ Die <b style="color: #ffffff; background-color: blue;">anliegende Kathete (Ankat
 
 
 sinus = """
-<div style="font-size: 26px">Hier sehen Sie, wie sich das Verhältnis der gegenüberliegenden Kathete <b style="color:green">Gegenkathete</b> 
-und der anliegenden Kathete <b style="color:blue">Ankathete</b> zur <b style="color:red">Hypotenuse</b> 
-in Abhängigkeit vom <b style="color:yellow; background-color: #000000;">Winkel Alpha</b>:<br> ändert.
-</div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        	<style>
+
+                h1 {
+                    font-size: 22px;
+                    color: #333;
+                    text-align: center;
+                    margin-top: 50px;
+                    margin-bottom: 30px;
+                }
+                div {
+                    background-color: #ffffff;
+                    font-size: 14px;
+                    color: #000000;
+                    margin: 0 auto;
+                    max-width: 800px;
+                    line-height: 1;
+                    padding: 0 10px;
+                    text-align: justify;
+                }
+	        </style>
+
+    </head>
+    <body>
+        <h2 style="color: #ffffff; background-color: black; text-align: center;">Sinus - Cosinus</h2>
+
+        <div style="font-size: 14px">
+            Hier sehen Sie, wie sich das Verhältnis der gegenüberliegenden Kathete <b style="color:green">Gegenkathete</b> 
+            und der anliegenden Kathete <b style="color:blue">Ankathete</b> zur <b style="color:red">Hypotenuse</b> 
+            in Abhängigkeit vom <b style="color:yellow; background-color: #000000;">Winkel Alpha</b>:<br> ändert.
+        </div>
+    </body>
+</html>
 """
 
 explain = """
